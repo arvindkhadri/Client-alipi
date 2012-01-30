@@ -1,4 +1,4 @@
-function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
+function page_edit_client( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission, successUrl) 
 {
 
     var console, PopupControl, M4ImageElement,locName='',langName = '',styleName='',authorValue;
@@ -17,25 +17,25 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    } else if (node.attachEvent) {
 		// Simulates W3C event model in IE
 		return node.attachEvent('on' + event, function() {
-		    callback( {
-			target : window.event.srcElement,
-			pageX : window.event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft),
-			pageY : window.event.clientY  + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop),
-			clientX : window.event.clientX,
-			clientY : window.event.clientY,
-			keyCode : window.event.keyCode,
-			ctrlKey : window.event.ctrlKey,
-			altKey : window.event.altKey,
-			shiftKey : window.event.shiftKey,
-			type : window.event.type,
-			preventDefault : function() {
-			    window.event.returnValue = false;
-			},
-			stopPropagation : function() {
-			    window.event.cancelBubble = true;
-			}
+			callback( {
+				target : window.event.srcElement,
+				pageX : window.event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft),
+				pageY : window.event.clientY  + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop),
+				clientX : window.event.clientX,
+				clientY : window.event.clientY,
+				keyCode : window.event.keyCode,
+				ctrlKey : window.event.ctrlKey,
+				altKey : window.event.altKey,
+				shiftKey : window.event.shiftKey,
+				type : window.event.type,
+				preventDefault : function() {
+				    window.event.returnValue = false;
+				},
+				stopPropagation : function() {
+				    window.event.cancelBubble = true;
+				}
+			    });
 		    });
-		});
 	    }
 	    return false;
 	};
@@ -43,7 +43,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	// String concatenation in <IE9 is really slow.
 	UTIL.StringBuffer = function StringBuffer() {
 	    var buffer = [];
-
 	    this.append = function append(string) {
 		buffer.push(string);
 		return this;
@@ -67,14 +66,14 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    var index = 1, timer;
 
 	    timer = window.setInterval(function() {
-		if (index < steps) {
-		    callback(index, false);
-		    index += 1;
-		} else {
-		    clearInterval(timer);
-		    callback(index, true);
-		}
-	    }, delay);
+		    if (index < steps) {
+			callback(index, false);
+			index += 1;
+		    } else {
+			clearInterval(timer);
+			callback(index, true);
+		    }
+		}, delay);
 	};
 
 	UTIL.hashToQueryString = function hashToQueryString(hash) {
@@ -110,31 +109,31 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     var modules = (typeof module !== 'undefined' && module.exports);
 
 	     var document = (__global__.document || {
-		 // Provide a dummy document object if we're not in a browser, to keep
-		 // interpreters happy.
-		 createElement: function(){},
-		 createDocumentFragment: function(){},
-		 createTextNode: function(){},
-		 getElementById: function(){}
-	     }),
-	     toString = Object.prototype.toString,
-	     slice = Array.prototype.slice,
-	     // Functioms and objects involved in implementing cross-crowser workarounds
-	     createElement,
-	     eventAttrs,
-	     addEvent,
-	     setInnerHTML,
-	     /** Tag names defined in the HTML 4.01 Strict and Frameset DTDs. */
-	     tagNames = ("a abbr acronym address area b bdo big blockquote body br " +
-			 "button caption cite code col colgroup dd del dfn div dl dt em fieldset " +
-			 "form frame frameset h1 h2 h3 h4 h5 h6 hr head html i iframe img input " +
-			 "ins kbd label legend li link map meta noscript " /* :) */ + "object ol " +
-			 "optgroup option p param pre q samp script select small span strong style " +
-			 "sub sup table tbody td textarea tfoot th thead title tr tt ul var").split(" "),
-	     /** Lookup for known tag names. */
-	     tagNameLookup = lookup(tagNames),
-	     /** * Lookup for tags defined as EMPTY in the HTML 4.01 Strict and Frameset DTDs. */
-	     emptyTags = lookup("area base br col frame hr input img link meta param".split(" "));
+		     // Provide a dummy document object if we're not in a browser, to keep
+		     // interpreters happy.
+		     createElement: function(){},
+		     createDocumentFragment: function(){},
+		     createTextNode: function(){},
+		     getElementById: function(){}
+		 }),
+		 toString = Object.prototype.toString,
+		 slice = Array.prototype.slice,
+		 // Functioms and objects involved in implementing cross-crowser workarounds
+		 createElement,
+		 eventAttrs,
+		 addEvent,
+		 setInnerHTML,
+		 /** Tag names defined in the HTML 4.01 Strict and Frameset DTDs. */
+		 tagNames = ("a abbr acronym address area b bdo big blockquote body br " +
+			     "button caption cite code col colgroup dd del dfn div dl dt em fieldset " +
+			     "form frame frameset h1 h2 h3 h4 h5 h6 hr head html i iframe img input " +
+			     "ins kbd label legend li link map meta noscript " /* :) */ + "object ol " +
+			     "optgroup option p param pre q samp script select small span strong style " +
+			     "sub sup table tbody td textarea tfoot th thead title tr tt ul var").split(" "),
+		 /** Lookup for known tag names. */
+		 tagNameLookup = lookup(tagNames),
+		 /** * Lookup for tags defined as EMPTY in the HTML 4.01 Strict and Frameset DTDs. */
+		 emptyTags = lookup("area base br col frame hr input img link meta param".split(" "));
 
 	     // Utility functions -----------------------------------------------------------
 
@@ -144,9 +143,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     function extend(dest, source)
 	     {
 		 for (var name in source)
-		 {
-		     dest[name] = source[name];
-		 }
+		     {
+			 dest[name] = source[name];
+		     }
 		 return dest;
 	     }
 
@@ -157,9 +156,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     {
 		 var obj = {}, i = 0, l = a.length;
 		 for (; i < l; i++)
-		 {
-		     obj[a[i]] = true;
-		 }
+		     {
+			 obj[a[i]] = true;
+		     }
 		 return obj;
 	     }
 
@@ -193,7 +192,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		 return (!!o && toString.call(o) === "[object Object]" &&
 			 !o.nodeType &&
 			 !(o instanceof SafeString))
-	     }
+		     }
 
 	     /**
 	      * Flattens an Array in-place, replacing any Arrays it contains with their
@@ -202,19 +201,19 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     function flatten(a)
 	     {
 		 for (var i = 0, l = a.length; i < l; i++)
-		 {
-		     var c = a[i];
-		     if (isArray(c))
 		     {
-			 // Make sure we loop to the Array's new length
-			 l += c.length - 1;
-			 // Replace the current item with its contents
-			 Array.prototype.splice.apply(a, [i, 1].concat(c));
-			 // Stay on the current index so we continue looping at the first
-			 // element of the array we just spliced in or removed.
-			 i--;
+			 var c = a[i];
+			 if (isArray(c))
+			     {
+				 // Make sure we loop to the Array's new length
+				 l += c.length - 1;
+				 // Replace the current item with its contents
+				 Array.prototype.splice.apply(a, [i, 1].concat(c));
+				 // Stay on the current index so we continue looping at the first
+				 // element of the array we just spliced in or removed.
+				 i--;
+			     }
 		     }
-		 }
 	     }
 
 	     /**
@@ -231,83 +230,83 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 
 	     eventAttrs = lookup(
-		 ("blur focus focusin focusout load resize scroll unload click dblclick " +
-		  "mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
-		  "change select submit keydown keypress keyup error").split(" "));
+				 ("blur focus focusin focusout load resize scroll unload click dblclick " +
+				  "mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
+				  "change select submit keydown keypress keyup error").split(" "));
 
 	     if (!modules)
-	     {
-		 // jQuery is not available, implement the most essential workarounds
-		 var supportsStyle = (function()
-				      {
-					  var div = document.createElement("div");
-					  div.style.display = "none";
-					  div.innerHTML = '<span style="color:silver;">s<span>';
-					  return /silver/.test(div.getElementsByTagName("span")[0].getAttribute("style"));
-				      })(),
-		 specialRE = /^(?:href|src|style)$/,
-		 attributeTranslations = {
-                     cellspacing: "cellSpacing",
-                     "class": "className",
-                     colspan: "colSpan",
-                     "for": "htmlFor",
-                     frameborder: "frameBorder",
-                     maxlength: "maxLength",
-                     readonly: "readOnly",
-                     rowspan: "rowSpan",
-                     tabindex: "tabIndex",
-                     usemap: "useMap"
-		 };
-
-		 createElement = function(tagName, attributes)
 		 {
-		     var el = document.createElement(tagName); // Damn you, IE
+		     // jQuery is not available, implement the most essential workarounds
+		     var supportsStyle = (function()
+					  {
+					      var div = document.createElement("div");
+					      div.style.display = "none";
+					      div.innerHTML = '<span style="color:silver;">s<span>';
+					      return /silver/.test(div.getElementsByTagName("span")[0].getAttribute("style"));
+					  })(),
+			 specialRE = /^(?:href|src|style)$/,
+			 attributeTranslations = {
+			 cellspacing: "cellSpacing",
+			 "class": "className",
+			 colspan: "colSpan",
+			 "for": "htmlFor",
+			 frameborder: "frameBorder",
+			 maxlength: "maxLength",
+			 readonly: "readOnly",
+			 rowspan: "rowSpan",
+			 tabindex: "tabIndex",
+			 usemap: "useMap"
+		     };
 
-		     for (var name in attributes)
-		     {
-			 var value = attributes[name],
-			 name = attributeTranslations[name] || name;
-
-			 if (name in eventAttrs)
+		     createElement = function(tagName, attributes)
 			 {
-			     el["on" + name] = value;
-			     continue;
-			 }
+			     var el = document.createElement(tagName); // Damn you, IE
 
-			 var special = specialRE.test(name);
-			 //if ((name in el || el[name] !== undefined) && !special)
-			 //el[name] = value;
-			 if (!supportsStyle && name == "style")
-			     el.style.cssText = ""+value;
-			 else
-			     el.setAttribute(name, ""+value);
-		     }
+			     for (var name in attributes)
+				 {
+				     var value = attributes[name],
+					 name = attributeTranslations[name] || name;
 
-		     return el;
-		 };
+				     if (name in eventAttrs)
+					 {
+					     el["on" + name] = value;
+					     continue;
+					 }
 
-		 addEvent = function(id, event, handler)
-		 {
-		     document.getElementById(id)["on" + event] = handler;
-		 };
+				     var special = specialRE.test(name);
+				     //if ((name in el || el[name] !== undefined) && !special)
+				     //el[name] = value;
+				     if (!supportsStyle && name == "style")
+					 el.style.cssText = ""+value;
+				     else
+					 el.setAttribute(name, ""+value);
+				 }
 
-		 setInnerHTML = function(el, html)
-		 {
-		     try
-		     {
-			 el.innerHTML = html;
-		     }
-		     catch (e)
-		     {
-			 var div = document.createElement("div");
-			 div.innerHTML = html;
-			 while (el.firstChild)
-			     el.removeChild(el.firstChild);
-			 while (div.firstChild)
-			     el.appendChild(div.firstChild);
-		     }
-		 };
-	     }
+			     return el;
+			 };
+
+		     addEvent = function(id, event, handler)
+			 {
+			     document.getElementById(id)["on" + event] = handler;
+			 };
+
+		     setInnerHTML = function(el, html)
+			 {
+			     try
+				 {
+				     el.innerHTML = html;
+				 }
+			     catch (e)
+				 {
+				     var div = document.createElement("div");
+				     div.innerHTML = html;
+				     while (el.firstChild)
+					 el.removeChild(el.firstChild);
+				     while (div.firstChild)
+					 el.appendChild(div.firstChild);
+				 }
+			 };
+		 }
 
 
 	     // HTML Escaping ---------------------------------------------------------------
@@ -319,9 +318,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     function conditionalEscape(html)
 	     {
 		 if (html instanceof SafeString)
-		 {
-		     return html.value;
-		 }
+		     {
+			 return html.value;
+		     }
 		 return escapeHTML(""+html);
 	     }
 
@@ -337,9 +336,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     inheritFrom(SafeString, String);
 
 	     SafeString.prototype.toString = SafeString.prototype.valueOf = function()
-	     {
-		 return this.value;
-	     };
+		 {
+		     return this.value;
+		 };
 
 	     // Mock DOM Elements -----------------------------------------------------------
 
@@ -362,70 +361,70 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	      * child nodes and empties the fragment.
 	      */
 	     HTMLNode.prototype._inlineFragments = function()
-	     {
-		 for (var i = 0, l = this.childNodes.length; i < l; i++)
 		 {
-		     var child = this.childNodes[i];
-		     if (child instanceof HTMLFragment)
-		     {
-			 this.childNodes.splice.apply(this.childNodes,
-						      [i, 1].concat(child.childNodes));
-			 // Clear the fragment on append, as per DocumentFragment
-			 child.childNodes = [];
-		     }
-		 }
-	     };
+		     for (var i = 0, l = this.childNodes.length; i < l; i++)
+			 {
+			     var child = this.childNodes[i];
+			     if (child instanceof HTMLFragment)
+				 {
+				     this.childNodes.splice.apply(this.childNodes,
+								  [i, 1].concat(child.childNodes));
+				     // Clear the fragment on append, as per DocumentFragment
+				     child.childNodes = [];
+				 }
+			 }
+		 };
 
 	     /**
 	      * Emulates ``appendChild``, inserting fragment child node contents and
 	      * emptying the fragment if one is given.
 	      */
 	     HTMLNode.prototype.appendChild = function(node)
-	     {
-		 if (node instanceof HTMLFragment)
 		 {
-		     this.childNodes = this.childNodes.concat(node.childNodes);
-		     // Clear the fragment on append, as per DocumentFragment
-		     node.childNodes = [];
-		 }
-		 else
-		 {
-		     this.childNodes.push(node);
-		 }
-	     };
+		     if (node instanceof HTMLFragment)
+			 {
+			     this.childNodes = this.childNodes.concat(node.childNodes);
+			     // Clear the fragment on append, as per DocumentFragment
+			     node.childNodes = [];
+			 }
+		     else
+			 {
+			     this.childNodes.push(node);
+			 }
+		 };
 
 	     /**
 	      * Emulates ``cloneNode`` so cloning of ``HTMLFragment`` objects works
 	      * as expected.
 	      */
 	     HTMLNode.prototype.cloneNode = function(deep)
-	     {
-		 var clone = this._clone();
-		 if (deep === true)
 		 {
-		     for (var i = 0, l = this.childNodes.length; i < l; i++)
-		     {
-			 var node = this.childNodes[i];
-			 if (node instanceof HTMLElement)
+		     var clone = this._clone();
+		     if (deep === true)
 			 {
-			     clone.childNodes.push(node.cloneNode(deep));
+			     for (var i = 0, l = this.childNodes.length; i < l; i++)
+				 {
+				     var node = this.childNodes[i];
+				     if (node instanceof HTMLElement)
+					 {
+					     clone.childNodes.push(node.cloneNode(deep));
+					 }
+				     else
+					 {
+					     clone.childNodes.push(node);
+					 }
+				 }
 			 }
-			 else
-			 {
-			     clone.childNodes.push(node);
-			 }
-		     }
-		 }
-		 return clone;
-	     };
+		     return clone;
+		 };
 
 	     /**
 	      * Creates the object to be used for deep cloning.
 	      */
 	     HTMLNode.prototype._clone = function()
-	     {
-		 return new Node();
-	     };
+		 {
+		     return new Node();
+		 };
 
 	     /**
 	      * Partially emulates a DOM ``Element ``for HTML generation.
@@ -449,11 +448,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     HTMLElement.prototype.nodeType = 1;
 
 	     HTMLElement.prototype._clone = function()
-	     {
-		 var clone = new HTMLElement(this.tagName, extend({}, this.attributes));
-		 clone.xhtml = this.xhtml;
-		 return clone;
-	     };
+		 {
+		     var clone = new HTMLElement(this.tagName, extend({}, this.attributes));
+		     clone.xhtml = this.xhtml;
+		     return clone;
+		 };
 
 	     /**
 	      * Creates an HTML/XHTML representation of an HTMLElement.
@@ -466,83 +465,83 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	      * If necessary, a unique id will be generated.
 	      */
 	     HTMLElement.prototype.toString = function()
-	     {
-		 var trackEvents = arguments[0] || false,
-		 tagName = (tagNameLookup[this.tagName]
-			    ? this.tagName
-			    : conditionalEscape(this.tagName));
-
-		 // Opening tag
-		 var parts = ["<" + tagName];
-		 for (var attr in this.attributes)
 		 {
-		     // innerHTML is a special case, as we can use it to (perhaps
-		     // inadvisedly) to specify entire contents as a string.
-		     if (attr === "innerHTML")
-		     {
-			 continue;
-		     }
-		     // Don't create attributes which wouldn't make sense in HTML mode -
-		     // they can be dealt with afet insertion using addEvents().
-		     if (attr in eventAttrs)
-		     {
-			 if (trackEvents === true && !this.eventsFound)
+		     var trackEvents = arguments[0] || false,
+		     tagName = (tagNameLookup[this.tagName]
+				? this.tagName
+				: conditionalEscape(this.tagName));
+
+		     // Opening tag
+		     var parts = ["<" + tagName];
+		     for (var attr in this.attributes)
 			 {
-			     this.eventsFound = true;
+			     // innerHTML is a special case, as we can use it to (perhaps
+			     // inadvisedly) to specify entire contents as a string.
+			     if (attr === "innerHTML")
+				 {
+				     continue;
+				 }
+			     // Don't create attributes which wouldn't make sense in HTML mode -
+			     // they can be dealt with afet insertion using addEvents().
+			     if (attr in eventAttrs)
+				 {
+				     if (trackEvents === true && !this.eventsFound)
+					 {
+					     this.eventsFound = true;
+					 }
+				     continue;
+				 }
+			     parts.push(" " + conditionalEscape(attr.toLowerCase()) + "=\"" +
+					conditionalEscape(this.attributes[attr]) + "\"");
 			 }
-			 continue;
-		     }
-		     parts.push(" " + conditionalEscape(attr.toLowerCase()) + "=\"" +
-				conditionalEscape(this.attributes[attr]) + "\"");
-		 }
-		 if (this.eventsFound && !("id" in this.attributes))
-		 {
-		     // Ensure an id is present so we can grab this element later
-		     this.id  = "__DB" + HTMLElement.eventTrackerId++ + "__";
-		     parts.push(' id="' + this.id + '"');
-		 }
-		 parts.push(">");
+		     if (this.eventsFound && !("id" in this.attributes))
+			 {
+			     // Ensure an id is present so we can grab this element later
+			     this.id  = "__DB" + HTMLElement.eventTrackerId++ + "__";
+			     parts.push(' id="' + this.id + '"');
+			 }
+		     parts.push(">");
 
-		 if (emptyTags[tagName])
-		 {
-		     if (this.xhtml)
-		     {
-			 parts.splice(parts.length - 1, 1, " />");
-		     }
+		     if (emptyTags[tagName])
+			 {
+			     if (this.xhtml)
+				 {
+				     parts.splice(parts.length - 1, 1, " />");
+				 }
+			     return parts.join("");
+			 }
+
+		     // If innerHTML was given, use it exclusively for the contents
+		     if ("innerHTML" in this.attributes)
+			 {
+			     parts.push(this.attributes.innerHTML);
+			 }
+		     else
+			 {
+			     for (var i = 0, l = this.childNodes.length; i < l; i++)
+				 {
+				     var node = this.childNodes[i];
+				     if (node instanceof HTMLElement || node instanceof SafeString)
+					 {
+					     parts.push(node.toString(trackEvents));
+					 }
+				     else if (node === "\u00A0")
+					 {
+					     // Special case to convert these back to entities,
+					     parts.push("&nbsp;");
+					 }
+				     else
+					 {
+					     // Coerce to string and escape
+					     parts.push(escapeHTML(""+node));
+					 }
+				 }
+			 }
+
+		     // Closing tag
+		     parts.push("</" + tagName + ">");
 		     return parts.join("");
-		 }
-
-		 // If innerHTML was given, use it exclusively for the contents
-		 if ("innerHTML" in this.attributes)
-		 {
-		     parts.push(this.attributes.innerHTML);
-		 }
-		 else
-		 {
-		     for (var i = 0, l = this.childNodes.length; i < l; i++)
-		     {
-			 var node = this.childNodes[i];
-			 if (node instanceof HTMLElement || node instanceof SafeString)
-			 {
-			     parts.push(node.toString(trackEvents));
-			 }
-			 else if (node === "\u00A0")
-			 {
-			     // Special case to convert these back to entities,
-			     parts.push("&nbsp;");
-			 }
-			 else
-			 {
-			     // Coerce to string and escape
-			     parts.push(escapeHTML(""+node));
-			 }
-		     }
-		 }
-
-		 // Closing tag
-		 parts.push("</" + tagName + ">");
-		 return parts.join("");
-	     };
+		 };
 
 	     /**
 	      * If event attributes were found when ``toString(true)`` was called, this
@@ -550,39 +549,39 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	      * to it and call ``addEvents`` on any HTMLElement children.
 	      */
 	     HTMLElement.prototype.addEvents = function()
-	     {
-		 if (this.eventsFound)
 		 {
-		     var id = ("id" in this.attributes
-			       ? conditionalEscape(this.attributes.id)
-			       : this.id);
-		     for (var attr in this.attributes)
-		     {
-			 if (attr in eventAttrs)
+		     if (this.eventsFound)
 			 {
-			     addEvent(id, attr, this.attributes[attr]);
+			     var id = ("id" in this.attributes
+				       ? conditionalEscape(this.attributes.id)
+				       : this.id);
+			     for (var attr in this.attributes)
+				 {
+				     if (attr in eventAttrs)
+					 {
+					     addEvent(id, attr, this.attributes[attr]);
+					 }
+				 }
+
+			     delete this.eventsFound;
+			     delete this.id;
 			 }
-		     }
 
-		     delete this.eventsFound;
-		     delete this.id;
-		 }
-
-		 for (var i = 0, l = this.childNodes.length; i < l; i++)
-		 {
-		     var node = this.childNodes[i];
-		     if (node instanceof HTMLElement)
-		     {
-			 node.addEvents();
-		     }
-		 }
-	     };
+		     for (var i = 0, l = this.childNodes.length; i < l; i++)
+			 {
+			     var node = this.childNodes[i];
+			     if (node instanceof HTMLElement)
+				 {
+				     node.addEvents();
+				 }
+			 }
+		 };
 
 	     HTMLElement.prototype.insertWithEvents = function(el)
-	     {
-		 setInnerHTML(el, this.toString(true));
-		 this.addEvents();
-	     };
+		 {
+		     setInnerHTML(el, this.toString(true));
+		     this.addEvents();
+		 };
 
 	     /**
 	      * Partially emulates a DOM ``DocumentFragment`` for HTML generation.
@@ -594,9 +593,9 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     inheritFrom(HTMLFragment, HTMLNode);
 
 	     HTMLFragment.prototype._clone = function()
-	     {
-		 return new HTMLFragment();
-	     };
+		 {
+		     return new HTMLFragment();
+		 };
 
 	     HTMLFragment.prototype.nodeType = 11;
 	     HTMLFragment.prototype.nodeName = "#document-fragment";
@@ -608,53 +607,53 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	      * any child HTMLElements when their ``toString()`` is called.
 	      */
 	     HTMLFragment.prototype.toString = function()
-	     {
-		 var trackEvents = arguments[0] || false,
-		 parts = [];
-
-		 // Contents
-		 for (var i = 0, l = this.childNodes.length; i < l; i++)
 		 {
-		     var node = this.childNodes[i];
-		     if (node instanceof HTMLElement || node instanceof SafeString)
-		     {
-			 parts.push(node.toString(trackEvents));
-		     }
-		     else if (node === "\u00A0")
-		     {
-			 // Special case to convert these back to entities,
-			 parts.push("&nbsp;");
-		     }
-		     else
-		     {
-			 // Coerce to string and escape
-			 parts.push(escapeHTML(""+node));
-		     }
-		 }
+		     var trackEvents = arguments[0] || false,
+		     parts = [];
 
-		 return parts.join("");
-	     };
+		     // Contents
+		     for (var i = 0, l = this.childNodes.length; i < l; i++)
+			 {
+			     var node = this.childNodes[i];
+			     if (node instanceof HTMLElement || node instanceof SafeString)
+				 {
+				     parts.push(node.toString(trackEvents));
+				 }
+			     else if (node === "\u00A0")
+				 {
+				     // Special case to convert these back to entities,
+				     parts.push("&nbsp;");
+				 }
+			     else
+				 {
+				     // Coerce to string and escape
+				     parts.push(escapeHTML(""+node));
+				 }
+			 }
+
+		     return parts.join("");
+		 };
 
 	     /**
 	      * Calls ``addEvents()`` on any HTMLElement children.
 	      */
 	     HTMLFragment.prototype.addEvents = function()
-	     {
-		 for (var i = 0, l = this.childNodes.length; i < l; i++)
 		 {
-		     var node = this.childNodes[i];
-		     if (node instanceof HTMLElement)
-		     {
-			 node.addEvents();
-		     }
-		 }
-	     };
+		     for (var i = 0, l = this.childNodes.length; i < l; i++)
+			 {
+			     var node = this.childNodes[i];
+			     if (node instanceof HTMLElement)
+				 {
+				     node.addEvents();
+				 }
+			 }
+		 };
 
 	     HTMLFragment.prototype.insertWithEvents = function(el)
-	     {
-		 setInnerHTML(el, this.toString(true));
-		 this.addEvents();
-	     };
+		 {
+		     setInnerHTML(el, this.toString(true));
+		     this.addEvents();
+		 };
 
 	     /**
 	      * Creates a function which, when called, uses DOMBuilder to create an element
@@ -666,34 +665,34 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     function createElementFunction(tagName)
 	     {
 		 var elementFunction = function()
-		 {
-		     if (arguments.length === 0)
 		     {
-			 // Short circuit if there are no arguments, to avoid further
-			 // argument inspection.
-			 if (DOMBuilder.mode == "DOM")
-			 {
-			     return document.createElement(tagName);
-			 }
+			 if (arguments.length === 0)
+			     {
+				 // Short circuit if there are no arguments, to avoid further
+				 // argument inspection.
+				 if (DOMBuilder.mode == "DOM")
+				     {
+					 return document.createElement(tagName);
+				     }
+				 else
+				     {
+					 return new HTMLElement(tagName);
+				     }
+			     }
 			 else
-			 {
-			     return new HTMLElement(tagName);
-			 }
-		     }
-		     else
-		     {
-			 return createElementFromArguments(tagName, slice.call(arguments));
-		     }
-		 };
+			     {
+				 return createElementFromArguments(tagName, slice.call(arguments));
+			     }
+		     };
 
 		 // Add a ``map`` function which will call ``DOMBuilder.map`` with the
 		 // appropriate ``tagName``.
 		 elementFunction.map = function()
-		 {
-		     var mapArgs = slice.call(arguments);
-		     mapArgs.unshift(tagName);
-		     return DOMBuilder.map.apply(DOMBuilder, mapArgs);
-		 };
+		     {
+			 var mapArgs = slice.call(arguments);
+			 mapArgs.unshift(tagName);
+			 return DOMBuilder.map.apply(DOMBuilder, mapArgs);
+		     };
 
 		 return elementFunction;
 	     }
@@ -716,27 +715,27 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	     function createElementFromArguments(tagName, args)
 	     {
 		 var attributes, children,
-		 // The short circuit in ``createElementFunction`` ensures we will
-		 // always have at least one argument when called via element creation
-		 // functions.
-		 argsLength = args.length, firstArg = args[0];
+		     // The short circuit in ``createElementFunction`` ensures we will
+		     // always have at least one argument when called via element creation
+		     // functions.
+		     argsLength = args.length, firstArg = args[0];
 
 		 if (argsLength === 1 &&
 		     isArray(firstArg))
-		 {
-		     children = firstArg; // ([child1, ...])
-		 }
+		     {
+			 children = firstArg; // ([child1, ...])
+		     }
 		 else if (isObject(firstArg))
-		 {
-		     attributes = firstArg;
-		     children = (argsLength == 2 && isArray(args[1])
-				 ? args[1]               // (attributes, [child1, ...])
-				 : slice.call(args, 1)); // (attributes, child1, ...)
-		 }
+		     {
+			 attributes = firstArg;
+			 children = (argsLength == 2 && isArray(args[1])
+				     ? args[1]               // (attributes, [child1, ...])
+				     : slice.call(args, 1)); // (attributes, child1, ...)
+		     }
 		 else
-		 {
-		     children = slice.call(args); // (child1, ...)
-		 }
+		     {
+			 children = slice.call(args); // (child1, ...)
+		     }
 
 		 return DOMBuilder.createElement(tagName, attributes, children);
 	     }
@@ -776,26 +775,26 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		     var originalMode = this.mode;
 		     this.mode = mode;
 		     try
-		     {
-			 return func();
-		     }
+			 {
+			     return func();
+			 }
 		     finally
-		     {
-			 this.mode = originalMode;
-		     }
+			 {
+			     this.mode = originalMode;
+			 }
 		 },
 
 		 /**
 		  * An ``Object`` containing element creation functions.
 		  */
 		 elementFunctions: (function(obj)
-				    {
-					for (var i = 0, tagName; tagName = tagNames[i]; i++)
-					{
-					    obj[tagName.toUpperCase()] = createElementFunction(tagName);
-					}
-					return obj;
-				    })({}),
+	     {
+		 for (var i = 0, tagName; tagName = tagNames[i]; i++)
+		     {
+			 obj[tagName.toUpperCase()] = createElementFunction(tagName);
+		     }
+		 return obj;
+	     })({}),
 
 		 /**
 		  * Adds element creation functions to a given context ``Object``, or to
@@ -825,30 +824,30 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		     flatten(children);
 
 		     if (this.mode != "DOM")
-		     {
-			 return new HTMLElement(tagName, attributes, children);
-		     }
+			 {
+			     return new HTMLElement(tagName, attributes, children);
+			 }
 
 		     // Create the element and set its attributes and event listeners
 		     var el = createElement(tagName, attributes);
 
 		     // If content was set via innerHTML, we're done...
 		     if (!("innerHTML" in attributes))
-		     {
-			 // ...otherwise, append children
-			 for (var i = 0, l = children.length; i < l; i++)
 			 {
-			     var child = children[i];
-			     if (child && child.nodeType)
-			     {
-				 el.appendChild(child);
-			     }
-			     else
-			     {
-				 el.appendChild(document.createTextNode(""+child));
-			     }
+			     // ...otherwise, append children
+			     for (var i = 0, l = children.length; i < l; i++)
+				 {
+				     var child = children[i];
+				     if (child && child.nodeType)
+					 {
+					     el.appendChild(child);
+					 }
+				     else
+					 {
+					     el.appendChild(document.createTextNode(""+child));
+					 }
+				 }
 			 }
-		     }
 		     return el;
 		 },
 
@@ -892,51 +891,51 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		 {
 		     // Determine how the function was called
 		     if (isArray(arguments[1]))
-		     {
-			 // (tagName, items, func)
-			 var defaultAttrs = {},
-			 items = arguments[1],
-			 func = (isFunction(arguments[2]) ? arguments[2] : null);
-		     }
+			 {
+			     // (tagName, items, func)
+			     var defaultAttrs = {},
+			     items = arguments[1],
+			     func = (isFunction(arguments[2]) ? arguments[2] : null);
+			 }
 		     else
-		     {
-			 // (tagName, attrs, items, func)
-			 var defaultAttrs = arguments[1],
-			 items = arguments[2],
-			 func = (isFunction(arguments[3]) ? arguments[3] : null);
-		     }
+			 {
+			     // (tagName, attrs, items, func)
+			     var defaultAttrs = arguments[1],
+			     items = arguments[2],
+			     func = (isFunction(arguments[3]) ? arguments[3] : null);
+			 }
 
 		     var results = [];
 		     for (var i = 0, l = items.length; i < l; i++)
-		     {
-			 var attrs = extend({}, defaultAttrs);
-			 // If we were given a mapping function, call it and use the
-			 // return value as the contents, unless the function specifies
-			 // that the item shouldn't generate an element by explicity
-			 // returning null.
-			 if (func !== null)
 			 {
-			     var children = func(items[i], attrs, i);
-			     if (children === null)
-			     {
-				 continue;
-			     }
-			 }
-			 else
-			 {
-			     // If we weren't given a mapping function, use the item as the
-			     // contents.
-			     var children = items[i];
-			 }
+			     var attrs = extend({}, defaultAttrs);
+			     // If we were given a mapping function, call it and use the
+			     // return value as the contents, unless the function specifies
+			     // that the item shouldn't generate an element by explicity
+			     // returning null.
+			     if (func !== null)
+				 {
+				     var children = func(items[i], attrs, i);
+				     if (children === null)
+					 {
+					     continue;
+					 }
+				 }
+			     else
+				 {
+				     // If we weren't given a mapping function, use the item as the
+				     // contents.
+				     var children = items[i];
+				 }
 
-			 // Ensure children are in an Array, as required by createElement
-			 if (!isArray(children))
-			 {
-			     children = [children];
-			 }
+			     // Ensure children are in an Array, as required by createElement
+			     if (!isArray(children))
+				 {
+				     children = [children];
+				 }
 
-			 results.push(this.createElement(tagName, attrs, children));
-		     }
+			     results.push(this.createElement(tagName, attrs, children));
+			 }
 		     return results;
 		 },
 
@@ -962,35 +961,35 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		 {
 		     if (arguments.length === 1 &&
 			 isArray(arguments[0]))
-		     {
-			 var children = arguments[0]; // ([child1, ...])
-		     }
+			 {
+			     var children = arguments[0]; // ([child1, ...])
+			 }
 		     else
-		     {
-			 var children = slice.call(arguments) // (child1, ...)
-		     }
+			 {
+			     var children = slice.call(arguments) // (child1, ...)
+			 }
 
 		     // Inline the contents of any child Arrays
 		     flatten(children);
 
 		     if (this.mode != "DOM")
-		     {
-			 return new HTMLFragment(children);
-		     }
+			 {
+			     return new HTMLFragment(children);
+			 }
 
 		     var fragment = document.createDocumentFragment();
 		     for (var i = 0, l = children.length; i < l; i++)
-		     {
-			 var child = children[i];
-			 if (child.nodeType)
 			 {
-			     fragment.appendChild(child);
+			     var child = children[i];
+			     if (child.nodeType)
+				 {
+				     fragment.appendChild(child);
+				 }
+			     else
+				 {
+				     fragment.appendChild(document.createTextNode(""+child));
+				 }
 			 }
-			 else
-			 {
-			     fragment.appendChild(document.createTextNode(""+child));
-			 }
-		     }
 
 		     return fragment;
 		 },
@@ -1040,40 +1039,40 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	      *    any content for the fragment by returning ``null``.
 	      */
 	     DOMBuilder.fragment.map = function(items, func)
-	     {
-		 // If we weren't given a mapping function, the user may as well just
-		 // have created a fragment directly, as we're just wrapping content
-		 // here, not creating it.
-		 if (!isFunction(func))
 		 {
-		     return DOMBuilder.fragment(items);
-		 }
+		     // If we weren't given a mapping function, the user may as well just
+		     // have created a fragment directly, as we're just wrapping content
+		     // here, not creating it.
+		     if (!isFunction(func))
+			 {
+			     return DOMBuilder.fragment(items);
+			 }
 
-		 var results = [];
-		 for (var i = 0, l = items.length; i < l; i++)
-		 {
-		     // Call the mapping function and add the return value to the
-		     // fragment contents, unless the function specifies that the item
-		     // shouldn't generate content by explicity returning null.
-		     var children = func(items[i], i);
-		     if (children === null)
-		     {
-			 continue;
-		     }
-		     results = results.concat(children);
-		 }
-		 return DOMBuilder.fragment(results);
-	     };
+		     var results = [];
+		     for (var i = 0, l = items.length; i < l; i++)
+			 {
+			     // Call the mapping function and add the return value to the
+			     // fragment contents, unless the function specifies that the item
+			     // shouldn't generate content by explicity returning null.
+			     var children = func(items[i], i);
+			     if (children === null)
+				 {
+				     continue;
+				 }
+			     results = results.concat(children);
+			 }
+		     return DOMBuilder.fragment(results);
+		 };
 
 	     // Export DOMBuilder or expose it to the global object
 	     if (modules)
-	     {
-		 module.exports = DOMBuilder;
-	     }
+		 {
+		     module.exports = DOMBuilder;
+		 }
 	     else
-	     {
-		 __global__.DOMBuilder = DOMBuilder;
-	     }
+		 {
+		     __global__.DOMBuilder = DOMBuilder;
+		 }
 
 	 })(this);
 
@@ -1081,46 +1080,46 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	DOM.BUILDER = DOMBuilder.apply();
 
 	DOM.getIndex = function getIndex (currentNode)
-	{
-    	    var kids = currentNode.parentNode.childNodes;
-    	    var j = 0;
-    	    for(var i=0; i< kids.length; i++)
-    	    {
-    		if (currentNode.nodeName == kids[i].nodeName)
-    		    j++;
-    		if (currentNode == kids[i])
-    		{
-    		    return j;
-    		}
-    		else
-    		    continue;
-    	    }
-    	    return -1;
-	};
+	    {
+		var kids = currentNode.parentNode.childNodes;
+		var j = 0;
+		for(var i=0; i< kids.length; i++)
+		    {
+			if (currentNode.nodeName == kids[i].nodeName)
+			    j++;
+			if (currentNode == kids[i])
+			    {
+				return j;
+			    }
+			else
+			    continue;
+		    }
+		return -1;
+	    };
 
 	DOM.getElementIdx = function getElementIdx(elt)
-	{
-	    var count = 1;
-	    for (var sib = elt.previousSibling; sib ; sib = sib.previousSibling)
 	    {
-		if(sib.nodeType == 1 && sib.tagName == elt.tagName)count++
-	    }
+		var count = 1;
+		for (var sib = elt.previousSibling; sib ; sib = sib.previousSibling)
+		    {
+			if(sib.nodeType == 1 && sib.tagName == elt.tagName)count++
+									       }
 	    
-	    return count;
-	};
+		return count;
+	    };
 	
 	DOM.makePath = function makePath(elt){
     	    var path = '';
 	    for (; elt && elt.nodeType == 1; elt = elt.parentNode)
-	    {
-		if (elt.attributes['m4pageedittype'] === undefined || elt.attributes['m4pageedittype'].nodeValue != 'text')
 		{
-		    idx = DOM.getElementIdx(elt);
-		    xname = elt.tagName;
-		    if (idx > 1) xname += "[" + idx + "]";
-		    path = "/" + xname + path;
+		    if (elt.attributes['m4pageedittype'] === undefined || elt.attributes['m4pageedittype'].nodeValue != 'text')
+			{
+			    idx = DOM.getElementIdx(elt);
+			    xname = elt.tagName;
+			    if (idx > 1) xname += "[" + idx + "]";
+			    path = "/" + xname + path;
+			}
 		}
-	    }
 	    console.log(path);
 	    return path;
 	};
@@ -1130,53 +1129,56 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    try{
 		var result = nodes.iterateNext();
 		while (result)
-		{
-		    if (result.tagName == "img" || result.tagName =='IMG'){
-			url=newcontent.split(',')[1];
-			size = newcontent.split(',')[0].split('x');
-			width = size[0];
-			height = size[1];
-			result.setAttribute('src',url)
-			result.setAttribute('width',width);
-			result.setAttribute('height',height);
+		    {
+			if (result.tagName == "img" || result.tagName =='IMG'){
+			    url=newcontent.split(',')[1];
+			    size = newcontent.split(',')[0].split('x');
+			    width = size[0];
+			    height = size[1];
+			    result.setAttribute('src',url)
+				result.setAttribute('width',width);
+			    result.setAttribute('height',height);
 			
+			}
+			else{
+			    result.textContent = newcontent;
+			}
+			result=nodes.iterateNext();
 		    }
-		    else{
-			result.textContent = newcontent;
-		    }
-		    result=nodes.iterateNext();
-		}
 	    }
 	    catch (e)
-	    {
-		dump( 'error: Document tree modified during iteration ' + e );
-	    }
+		{
+		    dump( 'error: Document tree modified during iteration ' + e );
+		}
 	    
 	}
 	
 	DOM.getXPATH = function getXPath(element)
-	{
-    	    var doc = document;
-    	    //we get the selections
-    	    var selection =  window.getSelection();
-    	    var str = '';
-    	    //var currentNode = selection.getRangeAt(i).commonAncestorContainer;
-    	    var currentNode = element;
-    	    var path = '';
-    	    var index = -1;
+	    {
+		var doc = document;
+		//we get the selections
+		var selection =  window.getSelection();
+		var str = '';
+		//var currentNode = selection.getRangeAt(i).commonAncestorContainer;
+		var currentNode = element;
+		var path = '';
+		var index = -1;
+		if ( currentNode == undefined) {
+		    currentNode = document.getElementById("alipiSelectedElement");
+		}
 
-    	    if (currentNode.nodeName != "#text")
-    	    {
-    		path = DOM.makePath(currentNode);
-    	    }
-    	    else
-    	    {
-    		path = DOM.makePath(currentNode.parentNode);
-    	    }
+		if (currentNode.nodeName != "#text")
+		    {
+			path = DOM.makePath(currentNode);
+		    }
+		else
+		    {
+			path = DOM.makePath(currentNode.parentNode);
+		    }
 
-    	   
-    	    return path;
-	};
+    		console.log(path);
+		return path;
+	    };
 
 	DOM.findPosition = function findPosition(element) {
 	    var currentLeft = 0, currentTop = 0;
@@ -1202,8 +1204,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		position = DOM.findPosition(element);
 
 		document.body.appendChild(DOM.BUILDER.DIV( { style : 'background: transparent; z-index: 2147483644; width:'
-							     + (size.width + 'px') + '; height:' + (size.height + 'px')
-							     + '; position: absolute; left:' + (position.x + 'px') + '; top:' + (position.y + 'px') + ';' }));
+				+ (size.width + 'px') + '; height:' + (size.height + 'px')
+				+ '; position: absolute; left:' + (position.x + 'px') + '; top:' + (position.y + 'px') + ';' }));
 	    }
 	};
 
@@ -1227,18 +1229,18 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 	DOM.deleteStyleProperty = (function() {
-	    if (typeof document.createElement('div').style.removeAttribute !== 'undefined') {
-		// IE specific
-		return function deleteStyleProperty(object, property) {
-		    object.style.removeAttribute(property);
-		};
-	    } else {
-		// W3C standard
-		return function deleteStyleProperty(object, property) {
-		    object.style.removeProperty(property);
-		};
-	    }
-	})();
+		if (typeof document.createElement('div').style.removeAttribute !== 'undefined') {
+		    // IE specific
+		    return function deleteStyleProperty(object, property) {
+			object.style.removeAttribute(property);
+		    };
+		} else {
+		    // W3C standard
+		    return function deleteStyleProperty(object, property) {
+			object.style.removeProperty(property);
+		    };
+		}
+	    })();
 
 	// Not to be used for Style attributes. For style attributes use overrideStyleProperty instead
 	DOM.overrideAttribute = function overrideAttribute (object, attributeName, value) {
@@ -1267,54 +1269,56 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 	DOM.addListener = (function() {
-	    if (document.attachEvent) {
-		// Simulates W3C event model in IE
-		return function addListener(type, callback, capture) {
-		    document.attachEvent('on' + type, function() {
-			callback( {
-			    target : window.event.srcElement,
-			    pageX : window.event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft),
-			    pageY : window.event.clientY  + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop),
-			    clientX : window.event.clientX,
-			    clientY : window.event.clientY,
-			    keyCode : window.event.keyCode,
-			    ctrlKey : window.event.ctrlKey,
-			    preventDefault : function() {
-				window.event.returnValue = false;
-			    },
-			    stopPropagation : function() {
-				window.event.cancelBubble = true;
-			    }
-			});
-		    });
+		if (document.attachEvent) {
+		    // Simulates W3C event model in IE
+		    return function addListener(type, callback, capture) {
+			document.attachEvent('on' + type, function() {
+				callback( {
+					target : window.event.srcElement,
+					pageX : window.event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft),
+					pageY : window.event.clientY  + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop),
+					clientX : window.event.clientX,
+					clientY : window.event.clientY,
+					keyCode : window.event.keyCode,
+					ctrlKey : window.event.ctrlKey,
+					preventDefault : function() {
+					    window.event.returnValue = false;
+					},
+					stopPropagation : function() {
+					    window.event.cancelBubble = true;
+					}
+				    });
+			    });
+		    }
+		} else {
+		    return function addListener(type, callback, capture) {
+			document.addEventListener(type, callback, capture);
+		    };
 		}
-	    } else {
-		return function addListener(type, callback, capture) {
-		    document.addEventListener(type, callback, capture);
-		};
-	    }
-	})();
+	    })();
 
 	DOM.textContent = (function() {
-	    if (document.all) {
-		// IE specific
-		return function textContent(element, content) {
-		    if (content) {
-			element.innerText = content;
+		if (document.all) {
+		    // IE specific
+		    return function textContent(element, content) {
+			if (content) {
+			    element.innerText = content;
+			}
+			return element.innerText;
 		    }
-
-		    return element.innerText;
-		}
-	    } else {
-		return function textContent(element, content) {
-		    if (content) {
-			element.textContent = content;
+		} else {
+		    return function textContent(element, content) {
+			if (element == undefined) {
+			    element = document.getElementById("alipiSelectedElement");
+			    content = document.getElementById("alipiSelectedElement").textContent;
+			    element.textContent = content;
+			} else if (content) {
+			    element.textContent = content;
+			}
+			return element.textContent;
 		    }
-
-		    return element.textContent;
 		}
-	    }
-	})();
+	    })();
 
 	DOM.viewDimension = function viewDimension() {
 	    var width, height;
@@ -1371,7 +1375,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    set(initialAttributes);
 	    if (additionalAttributes) {
 		set(additionalAttributes)
-	    }
+		    }
 
 	    this.addStyle =  function(value) {
 		var style;
@@ -1451,7 +1455,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    http.setRequestHeader('Content-type', contentType);
 		}
 		http.send(data);
-
 		return http;
 	    }
 	};
@@ -1613,87 +1616,73 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.isFittable = function isFittable() {
 	    return (typeof element.m4boltRawImageWidth != 'undefined' && element.m4boltRawImageWidth > element.m4boltOriginalWidth)
-		|| (typeof element.m4boltRawImageHeight != 'undefined' && element.m4boltRawImageHeight > element.m4boltOriginalHeight);
+	    || (typeof element.m4boltRawImageHeight != 'undefined' && element.m4boltRawImageHeight > element.m4boltOriginalHeight);
 	};
     };
 
     SplashWindow = function SplashWindow(pageEditor ) {
 
-	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
+	this.createLabels = function createLabels() {
+	    
+	    msg = document.createElement('div');
+	    msg.setAttribute("id", "msgoverlay");
+	    msg.setAttribute("title", "PAGE EDITOR");
+	    msg.setAttribute("alipielements", "alipi");
+	    msg.setAttribute("style", "color:#000;line-height:25px;");
+	    document.body.appendChild(msg);
 
-	// because PageEditor is activated on "onload", we show a loading panel until
-	// onload finally fires, which can be a while if any resource on the page is
-	// slow to load.
+	    msgDesc = document.createElement("label");
+	    msgDesc.setAttribute("id", "msg-desc");
+	    msgDesc.innerHTML = 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page... And at any moment if you need help then hit a "Help" button.<br /> Don\'t show this again  ';
+	    msg.appendChild(msgDesc);
 
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'bgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'msgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:25%; top:25%; bottom:25%; right:25%; background:#000; display:none;').values());
-
-	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:27%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Page Editor');
-
-	messageOverlay.appendChild(messageTitle);
-
-	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({readonly:true}).addStyle('position:fixed; top:40%; left:27.5%; min-width:48%; max-width:48%; min-height:48%; max-height:48%; text-align:justify; color:#FFF; font-weight: normal; font-size:105%; line-height:130%;').values(), 'Click on any part of the page, and you will activate buttons that allow you to modify text, replace images and add audio. Don\'t forget to hit "Publish" when you\'re finished editing so we can save your newly-crafted page... And at any moment if you need help then hit a "Help" button.');
-
-	messageOverlay.appendChild(messageDescription);
-
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:29.5%; left:43%; font-size:120%;').values(), 'OK');
-
-	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:40%; bottom:28%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
-	editButton.onclick = function loadingEditButtonOnClick() {
-	    self.hide();
-	    return false;
+	    pubLabel = document.createElement("input");
+	    pubLabel.setAttribute("id", "check-box");
+	    pubLabel.setAttribute("alipielements", "alipi");
+	    pubLabel.setAttribute("type", "checkbox");
+	    pubLabel.setAttribute("name","msgcheckbox");
+	    pubLabel.setAttribute("style", "margin-top:20px;");
+	    msg.appendChild(pubLabel);	    
 	};
 
-	editButton.appendChild(text);
-	messageOverlay.appendChild(editButton);
-
-
-	hideOverlayCheckbox = DOM.BUILDER.INPUT(editAttributes.put({ id:'hideoverlay', name:'Loading Checkbox', type:'checkbox', checked:'yes'}).addStyle('position:fixed; bottom:29%; right:48%; background: transparent; display: inline-block;').values());
-
-	var checkboxLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; left:52.5%; bottom:29.5%; font-size:80%; font-weight:bold;  transparent; color: #FFF;display: inline-block;').values());
-	checkboxLabel.innerHTML = 'Don\'t show this again.';
-
-
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), hideOverlayCheckbox, checkboxLabel));
-	editButton.appendChild(text);
-	messageOverlay.appendChild(editButton);
-
-	document.body.appendChild(backgroundDiv);
-	document.body.appendChild(messageOverlay);
-
-
-	this.show = function show( textToDisplay) {
-
-	    if (textToDisplay) {
-		DOM.textContent(loadingText, textToDisplay);
-	    }
-	    backgroundDiv.style.display = 'block';
-	};
 	
-	this.hide = function hide() {
-	    if (hideOverlayCheckbox.checked) {
-		document.cookie ='m4.show.redbar.overlay=no;'
-	    } else {
-		var date = new Date();
-		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
-	    }
+	function display() {
+	    $(function() {
+		    $( "#msgoverlay" ).dialog({
+			    width:600,
+				height:250,
+				modal: true,
+				close: function() {
+				$("#msgoverlay").remove();
+			    },
+				buttons: {
+				OK: function() { hide();
+				    $("#msgoverlay").remove();
+				} 
+			    }
 
-	    messageOverlay.style.display = 'none';
-	    backgroundDiv.style.display = 'none';
+			});
+		});
 	};
 
 	this.activate = function activate() {
-	    /*
-	     *  Cookie logic is temporary. This needs to be part of a user preference.
-	     *  Bug http://bugzilla.boltnet.com/bugzilla/boltnet/show_bug.cgi?id=2962
-	     *  created for this purpose.
-	     */
+
 	    var allCookies = document.cookie;
 	    if (allCookies.indexOf('m4.show.redbar.overlay=no') == -1) {
-		messageOverlay.style.display = 'block';
+		display();
 	    }  else {
-		self.hide();
+		hide();
+	    }
+
+	};
+
+	function hide() {
+	    if (document.getElementById("check-box").checked) {
+		document.cookie ='m4.show.redbar.overlay=no;'
+		    } else {
+		//		var date = new Date();
+		//		document.cookie ='m4.show.redbar.overlay=no;expires=' + date.toUTCString() + ';';
+		$("#msgoverlay").hide();
 	    }
 	};
     } ;
@@ -1702,385 +1691,389 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     //------------------------------------ Target UI --------------------------------------------
     TargetWindow = function TargetWindow(pageEditor ) {
 
-	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
-	tooltip = new DOM.Attributes({ 'title': 'Check this if you want to post to our blog. That is "http://alipi-workshop.blogspot.com/"'});
+	this.createDialogBox = function createDialogBox() {
 
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 1))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
+	    target = document.createElement("div");
+	    target.setAttribute("id", "targetoverlay");
+	    target.setAttribute("title", "Please choose the target");
+	    target.setAttribute("alipielements", "alipi");
+	    target.setAttribute("class", "ui-widget-header ui-corner-all");
+	    document.body.appendChild(target);
 
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'targetoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:15%; top:15%; bottom:15%; right:15%; background:#000; display:none; vertical-align:middle;').values());
-
-	step1 = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:16%; left:40%; color:#FFF; font-size:100%; line-height: 36px; font-weight: bold; display: block; ').values(), 'Please provide all the details below');
-
-	messageOverlay.appendChild(step1);
-
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:13.5%; right:14%; width:25px; height:25px;').values());
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position: relative; line-height: 18px; height: 18px; font-size: 18px; margin-right: auto; vertical-align: middle;display: inline-block; float: none;').values(), 'OK');
-
-	image.onclick=function(){
-	    document.body.removeChild(document.getElementById('targetoverlay'));
-	    document.body.removeChild(document.getElementById('targetbgdiv'));
-	}
-
-
-	//---------------------------- state & language target --------------------------
-	locSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:44%; left:25%; font-weight: bold; background: transparent; color: #FFF;').values());
-	locSelectLabel.innerHTML = 'Select any state from the list';
-	enterMailIdLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:44%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;').values());
-	enterMailIdLabel.innerHTML = 'Select any style from the list';
+	    locLabel= document.createElement("label");
+	    locLabel.innerHTML = 'Select Location';
+	    locLabel.setAttribute("style", "position:absolute;top:5%;left:3%;color:#000;");
+	    target.appendChild(locLabel);
+				
+	    locName= document.createElement("input");
+	    locName.setAttribute("id","loc-select");
+	    locName.setAttribute("type","text");
+	    locName.setAttribute("alipielements", "alipi");
+	    locName.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
+	    target.appendChild(locName);
 
 
-	locSelectAttributes = panelButtonAttributes.put({ id : 'loc-select'}).addStyle('position:fixed; top:45%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	styleSelectAttributes = panelButtonAttributes.put({id : 'style-select'}).addStyle('position:fixed; top:45%; right:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
+	    langLabel= document.createElement("label");
+	    langLabel.innerHTML = 'Select Language';
+	    langLabel.setAttribute("style", "position:absolute;top:25%;left:3%;color:#000;");
+	    target.appendChild(langLabel);
+				
+	    langName= document.createElement("input");
+	    langName.setAttribute("id","lang-select");
+	    langName.setAttribute("type","text");
+	    langName.setAttribute("alipielements", "alipi");
+	    langName.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
+	    target.appendChild(langName);
 
+	    styleLabel= document.createElement("label");
+	    styleLabel.innerHTML = 'Select style';
+	    styleLabel.setAttribute("style", "position:absolute;top:45%;left:3%;color:#000;");
+	    target.appendChild(styleLabel);
+				
+	    styleSelect = document.createElement("input");
+	    styleSelect.setAttribute("id","styleSelect-select");
+	    styleSelect.setAttribute("type","text");
+	    styleSelect.setAttribute("alipielements", "alipi");
+	    styleSelect.setAttribute("style","position:absolute;top:45%;left:40%;width:250px;");
+	    target.appendChild(styleSelect);
 
-	langSelectLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:59%; left:25%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
-	langSelectLabel.innerHTML = 'Languages of selected/all state(s)';
-	authorLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:59%; left:53.5%; font-weight: bold; background: transparent; color: #FFF;display: inline-block;').values());
-	authorLabel.innerHTML = 'Author name';
+	    authLabel= document.createElement("label");
+	    authLabel.innerHTML = 'Author Name';
+	    authLabel.setAttribute("style", "position:absolute;top:65%;left:3%;color:#000;");
+	    target.appendChild(authLabel);
+				
+	    author= document.createElement("input");
+	    author.setAttribute("id","auth-select");
+	    author.setAttribute("type","text");
+	    author.setAttribute("alipielements", "alipi");
+	    author.setAttribute("style","position:absolute;top:65%;left:40%;width:250px;");
+	    target.appendChild(author);
 
-	langSelectAttributes = panelButtonAttributes.put({ id : 'lang-select'}).addStyle('position:fixed; top:60%; left:25%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values();
-	authorAttributes = DOM.BUILDER.INPUT(editAttributes.put({ id : 'author', placeholder:'E.g:- John Doe'}).addStyle('position:fixed; top:62.6%; right:26.2%; width:20%; color:#FFF; text-align:center; background: #222; border:3px solid; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; font-size:14px;').values());
-
-	blogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:25%; left:20%; min-width:60%; max-width:60%; font-weight: bold; background: transparent; color: #FFF; line-height:100%;').values());
-	blogLabel.innerHTML = 'If you have blogspot ID and want to post the changes to that blog then check "My blog" or you want to post to our blog then check "Our blog". If you have doubt then go with the default option.';
-
-	ourBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'ourcheck', name : 'Loading Checkbox', type : 'radio', checked:'yes'}).addStyle('position:fixed; top:31.6%; left:30%; background: transparent; display: inline-block;').values());
-	ourBlogLabel = DOM.BUILDER.LABEL(tooltip.addStyle('position:fixed; top:32%; left:33%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
-	ourBlogLabel.innerHTML = 'Our blog  [?]';
-
-	myBlogAttributes = DOM.BUILDER.INPUT(editAttributes.put({id : 'mycheck', name : 'Loading Checkbox', type : 'radio'}).addStyle('position:fixed; top:32%; left:57%; background: transparent; display: inline-block;').values());
-	myBlogLabel = DOM.BUILDER.LABEL(normalFontAttributes.addStyle('position:fixed; top:32.5%; left:60%; background: transparent; color: #FFF;display: inline-block; text-align:center; font-size:80%; font-weight: bold;').values());
-	myBlogLabel.innerHTML = 'My blog';
-
-	//-----------------------------End of state & language target -------------------
-
-	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; right:20%; bottom:18.5%; color:#FFF; margin:auto; width: 100px; height: 36px; display: block; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
-
-	this.okClick = function okClick() {
-	    if(document.getElementById('loc-select').value == '--Locations--' || document.getElementById('lang-select').value == '---Languages---' || document.getElementById('style-select').value == '---Style---') {
-		alert('Please select a Location, Language & Style');
-	    }
-	    else {
-		overlayBar = new OverlayBar(pageEditor);
-		overlayBar.blogpost();
-		messageOverlay.style.display = 'none';
-		backgroundDiv.style.display = 'none';
-
-	    }
-	};
-
-	okButton.appendChild(text);
-	messageOverlay.appendChild(okButton);
-	messageOverlay.appendChild(image);
-
-	
-	//---------------------------------------------start locLang, locSelect & styleSelect -----------------------
-	styleSelect = DOM.BUILDER.SELECT(styleSelectAttributes);
-
-	style_list={"stylename":[{"name":"---Style---"},{"name":"Simplication"},{"name":"Abstract"},{"name":"Translation"},{"name":"Funny"},{"name":"Children"}]}
-	for(var i=0;i<style_list.stylename.length;i++)
-	{
-	    y=DOM.BUILDER.OPTION(style_list.stylename[i].name);
-	    styleSelect.appendChild(y);
-	}
-
-	//---------------------------------------------start locLang & locSelect -----------------------
-
-	locSelect = DOM.BUILDER.SELECT(locSelectAttributes);
-	langSelect = DOM.BUILDER.SELECT(langSelectAttributes);
-
-	var xhrloc = new XMLHttpRequest();
-	xhrloc.onreadystatechange = function()
-    	{
-    	    if(xhrloc.readyState == 4)
-    	    {
-		if (xhrloc.status == 200)
-    		{
-    		    json= JSON.parse(xhrloc.responseText);
-		    /* parsing json response*/ 
-		    var loc=[];
-		    var texts=[];
-		    loc.push('--Locations--');
-		    texts.push('---Languages---');
-		    var locations = json["state"];
-		    for(var i=0; i< locations.length;i++)
-		    {
-			loc.push(locations[i]["name"]);
-		    }
-		    loc.push('None of the above');
-      		    for(i=0;i<loc.length;i++)	{
-	      		x=DOM.BUILDER.OPTION(loc[i]);
-	      		locSelect.add(x,null);
-	  	    }
-		    
-		    locSelect.onchange=function(){
-                        var locindex=locSelect.selectedIndex;
-			locName=loc[locindex];
-			if(texts.length>1)
-			{
-			    for(var i=texts.length;i>1;i--){
-				texts.pop()
-			    }
-			}
-            		if(locName!='None of the above'){
-			    for(var i=0;i<locations[locindex-1]["lang"].length;i++){
-				texts.push(locations[locindex-1].lang[i]);
-			    }
-			   texts.push("---More---");
-			    if(langSelect.firstChild==null){
-				for(var vp=0;vp<texts.length;vp++)
-				{	
-                		    var op = document.createElement('option');
-                		    op.text = texts[vp];
-                		    langSelect.appendChild(op);
-				}//end for
-			    }//end if
-			    else{
-				while(langSelect.firstChild!=null){
-				    langSelect.removeChild(langSelect.firstChild);
-				}//end while
-				for(var vp=0;vp<texts.length;vp++)
-				{
-				    
-                		    var op = document.createElement('option');
-                		    op.text = texts[vp];
-                		    langSelect.appendChild(op);
-				}//end for
-			    }//end else 		
-			    
-			}//end if
-			else{
-			    while(langSelect.firstChild!=null){
-				langSelect.removeChild(langSelect.firstChild);
-			    }//end while
-			    for(var i=0;i<locations.length;i++)
-			    {	for (var j=0; j<locations[i].lang.length; j++)
-				{ 
-				    texts.push(locations[i].lang[j]);
-				    texts.sort();
-				    for(var k=1;k<texts.length;k++){
-					if (texts[k] === texts[k-1]){ 
-					    texts.splice(k, 1);
-					    k--;
-					}	
-				    }
-				    
-				}//end inner for
-			    }//end main for
-			    for(var z=0; z<texts.length; z++)
-			    { 
-				var op = document.createElement('option');
-				op.text=texts[z];
-				langSelect.appendChild(op);
-			    }
-			}//end else
+	    yourcheck = document.createElement("input");
+	    yourcheck.setAttribute("id","your-check");
+	    yourcheck.setAttribute("type","radio");
+	    yourcheck.setAttribute("name", "blog");
+	    yourcheck.setAttribute("alipielements", "alipi");
+	    yourcheck.setAttribute("style","position:absolute;top:85%;left:40%;");
+	    target.appendChild(yourcheck);
+	    yourcheck.disabled = true; 
+	    
+	    ourcheck = document.createElement("input");
+	    ourcheck.setAttribute("id","our-check");
+	    ourcheck.setAttribute("type","radio");
+	    ourcheck.setAttribute("name", "blog");
+	    ourcheck.setAttribute("alipielements", "alipi");
+	    ourcheck.setAttribute("style","position:absolute;top:85%;left:70%;");
+	    target.appendChild(ourcheck);
 			
-		    }//end onchange
-		    langSelect.onchange=function(){
-                        var langindex=langSelect.selectedIndex;
-			langName=texts[langindex];
-			if(langName=='---More---'){
-			    while(langSelect.firstChild!=null){
-				langSelect.removeChild(langSelect.firstChild);
-			    }//end while
-				texts.pop();
-			    for(var i=0;i<locations.length;i++)
-			    {	for (var j=0; j<locations[i].lang.length; j++)
-				{ 
-				    texts.push(locations[i].lang[j]);
-				    texts.sort();
-				    for(var k=1;k<texts.length;k++){
-					if (texts[k] === texts[k-1]){ 
-					    texts.splice(k, 1);
-					    k--;
-					}	
-				    }
-				    
-				}//end inner for
-			    }//end main for
-			    for(var z=0; z<texts.length; z++)
-			    { 
-				var op = document.createElement('option');
-				op.text=texts[z];
-				langSelect.appendChild(op);
-			    }
-			}
-		    }//end onchange
-    		}
-		
-    		/* end parsing json response*/ 
-		
-    		else {
-    		    alert("couldn't get data file: error number "+xhrloc.status);
-    		}
-    	    }
-    	}
-	
-	xhrloc.open("GET","http://dev.a11y.in/getData",true);
-	xhrloc.send();
+	    yourLabel = document.createElement('label');
+	    yourLabel.textContent = "Your blog";
+	    yourLabel.setAttribute("style","position:absolute;top:85%;left:45%;color:#000;");
+	    target.appendChild(yourLabel);
 
+	    ourLabel = document.createElement('label');
+	    ourLabel.textContent = "Our blog";
+	    ourLabel.setAttribute("style","position:absolute;top:85%;left:75%;color:#000;");
+	    target.appendChild(ourLabel);
 
-
-	//---------------------------------------------end locLang & locSelect ------------------------
-
-	//-------------------------------------------- start blog details ---------------------------
-	ourBlog = ourBlogAttributes;
-	myBlog = myBlogAttributes;
-	author = authorAttributes;
-	//-------------------------------------------- end blog details ------------------------------
-
-
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values(), locSelect, locSelectLabel, langSelect, langSelectLabel, ourBlog, ourBlogLabel, myBlog, myBlogLabel, enterMailIdLabel, styleSelect, author, authorLabel, blogLabel));
-	okButton.appendChild(text);
-	messageOverlay.appendChild(okButton);
-
-	document.body.appendChild(backgroundDiv);
-	document.body.appendChild(messageOverlay);
-
-
-	this.show = function show( textToDisplay) {
-
-	    if (textToDisplay) {
-		DOM.textContent(textToDisplay);
+	    locButton = document.createElement("input");
+	    locButton.setAttribute("id","loc-bt");
+	    locButton.setAttribute("title","Set your preferred location");
+	    locButton.value="+";
+	    locButton.setAttribute("type","button");
+	    locButton.setAttribute("style","position:absolute;top:6%;right:4%;width:20px;");
+	    locButton.setAttribute("alipielements", "alipi");
+	    //locButton.setAttribute("type","button");
+	    if (window.location.hostname != '127.0.0.1') {
+		target.appendChild(locButton);
 	    }
-	};
+	    
+	    langButton = document.createElement("input");
+            langButton.setAttribute("id","lang-bt");
+            langButton.setAttribute("title","Set your preferred location");
+            langButton.value="+";
+            langButton.setAttribute("type","button");
+            langButton.setAttribute("style","position:absolute;top:26%;right:4%;width:20px;");
+            langButton.setAttribute("alipielements", "alipi");
+            //locButton.setAttribute("type","button");
+	    if (window.location.hostname != '127.0.0.1') {
+		target.appendChild(langButton);
+	    }
+	}
 
 	this.activate = function activate() {
-	    backgroundDiv.style.display = 'block';
-	    messageOverlay.style.display = 'block';
-	};
+	    $(function() {
+		    $( "#targetoverlay" ).dialog({
+			    height:500,
+				width:500,
+				modal: true,
+				buttons: {
+				OK: function() {
+				    overlayBar = new OverlayBar(pageEditor);
+				    overlayBar.blogpost();
+				}
+			    },
+			    close: function() {
+				$( "#targetoverlay" ).remove();
+			    },
+			});
+		});
+	    
+	    $("#loc-bt").click(function () { 
+                if(document.getElementById('loc-bt').value == '+'){
+               		//remove input field and create a combo box
+			$('#loc-select').hide(); 
+		    locSel = document.createElement("select");
+	    		locSel.setAttribute("id","loct-select");
+	    		locSel.setAttribute("type","text");
+	    		locSel.setAttribute("alipielements", "alipi");
+	    		locSel.setAttribute("style","position:absolute;top:5%;left:40%;width:250px;");
+			for(i=0;i<client_json.def_loc.length;i++){
+			    locopt = document.createElement("option");
+			    theText=document.createTextNode(client_json.def_loc[i]);
+			    locopt.appendChild(theText);
+			    locSel.appendChild(locopt);
+			}
+	    		target.appendChild(locSel);
+                	locButton.value = '-';
+		}
+		else if(document.getElementById('loc-bt').value == '-'){
+		    //show the input field and remove combo box
+		    target.removeChild(locSel);
+		    $('#loc-select').show(); 
+		    locButton.value = '+';
+ 		}	
+		
+		
+    	    });
+	   
+	     $("#lang-bt").click(function () {
+                if(document.getElementById('lang-bt').value == '+'){
+                        //remove input field and create a combo box
+                        $('#lang-select').hide();
+                        langSel= document.createElement("select");
+                        langSel.setAttribute("id","langs-select");
+                        langSel.setAttribute("type","text");
+                        langSel.setAttribute("alipielements", "alipi");
+                        langSel.setAttribute("style","position:absolute;top:25%;left:40%;width:250px;");
+                        for(i=0;i<client_json.def_lang.length;i++){
+			    langopt = document.createElement("option");
+			    theText=document.createTextNode(client_json.def_lang[i]);
+			    langopt.appendChild(theText);
+			    langSel.appendChild(langopt);
+                        }
+                        target.appendChild(langSel);
+			
+                        langButton.value = '-';
+                }
+                else if(document.getElementById('lang-bt').value == '-'){
+		    //show the input field and remove combo box
+		    $('#lang-select').show();
+		    target.removeChild(langSel);
+		    langButton.value = '+';
+                }
+		
+
+            });
+ 
+		
+	    $( "#loc-select" ).autocomplete({
+	    	    source: function(req, add){
+				
+	    		//pass request to server
+	    		$.getJSON("http://y.a11y.in/loc?", req, function(data) {
+	    			//create array for response objects
+	    			var suggestions = [];
+						    
+	    			//process response
+	    			$.each(data, function(i, val){
+	    			    for(i=0;i<val.length;i++){
+	    				   suggestions.push(val[i]);
+	    				}
+	    			    });
+						    
+	    			//pass array to callback
+	    			add(suggestions);
+	    		    });
+	    	    },
+	    		});				
+
+	    $( "#lang-select" ).autocomplete({
+	    	    source: function(req, add){
+				
+	    		//pass request to server
+	    		$.getJSON("http://y.a11y.in/lang?", req, function(data) {
+						    
+	    			//create array for response objects
+	    			var suggestions = [];
+						    
+	    			//process response
+	    			$.each(data, function(i, val){
+	    				//suggestions.push(val.country);
+	    				for(i=0;i<val.length;i++){
+	    				    suggestions.push(val[i]);
+	    				}
+	    			    });
+						    
+	    			//pass array to callback
+	    			add(suggestions);
+	    		    });
+	    	    },
+	    		});
+
+				
+
+
+	}
+
     };
 
     // ------------------------------------ Target UI end ---------------------------------------------
 
-// ========================================== Edit Window start ======================================================
+    // ========================================== Edit Window start ======================================================
 
 
     EditWindow = function EditWindow(pageEditor) {
 
-	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv, textElementPopup;
+	editor = document.createElement("div");
+	editor.setAttribute("id", "editoroverlay");
+	editor.setAttribute("title", "Edit window");
+	editor.setAttribute("alipielements", "alipi");
+	editor.setAttribute("class", "ui-widget-header ui-corner-all");
+	document.body.appendChild(editor);
 
+	refLabel= document.createElement("label");
+	refLabel.innerHTML = 'Reference';
+	refLabel.setAttribute("style", "position:absolute;top:5%;left:20%;color:#000;font-size:25px;");
+	editor.appendChild(refLabel);
+				
+	refBox= document.createElement("textarea");
+	refBox.setAttribute("id","reference");
+	refBox.setAttribute("readonly", 'yes');
+	refBox.setAttribute("style","position:absolute;top:15%;left:4%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;font-size:15;text-align:justify;");
+	editor.appendChild(refBox);
 
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'editorbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-
-
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'editoroverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:10%; top:15%; bottom:10%; right:10%; background:#000; display:none;').values());
-
-
-	leftEditor = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; left:27%; color:#FFF; font-size:150%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Reference');
-
-	rightEditor = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:23%; right:28%; color:#FFF; font-size:150%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Editor');
-
-	messageOverlay.appendChild(leftEditor);
-	messageOverlay.appendChild(rightEditor);
-
-	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({id : 'originaltext', readonly:'yes'}).addStyle('position:fixed; top:35%; left:13%; text-align:justify; color:#FFF; font-weight: normal; font-size:90%; line-height:130%; min-width:35%; min-height:43%; max-width:35%; max-height:43%; box-shadow: 0px 0px 5px #aaa; -webkit-box-shadow: 0px 0px 5px #aaa; -moz-box-shadow: 0px 0px 5px #aaa; -moz-border-radius:10px; -webkit-border-radius:10px; padding:5px;').values());
-
-	textArea = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({id : 'texteditor'}).addStyle('position:fixed; top:35%; left:52%; text-align:justify; color:#a84; font-weight: normal; font-size:90%; line-height:130%; max-width:35%; max-height:43%; min-width:35%; min-height:43%; box-shadow: 0px 0px 5px #aaa; -webkit-box-shadow: 0px 0px 5px #aaa; -moz-box-shadow: 0px 0px 5px #aaa; -moz-border-radius:10px; -webkit-border-radius:10px; padding:5px;').values());
-
-	messageOverlay.appendChild(messageDescription);
-	messageOverlay.appendChild(textArea);
-
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:13.7%; left:49%; font-size:120%;').values(), 'OK');
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:13%; right:9%; width:25px; height:25px;').values());
-
-	okButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:12%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
-	okButton.onclick = function loadingOkButtonOnClick() {
-	    textElement = new TextElementPopup(pageEditor);
-	    textElement.variable();
-	};
-
-	image.onclick=function(){
-	    document.body.removeChild(document.getElementById('editoroverlay'));
-	    document.body.removeChild(document.getElementById('editorbgdiv'));
-	}
-
-	okButton.appendChild(text);
-	messageOverlay.appendChild(okButton);
-	messageOverlay.appendChild(image);
-
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values()));
-	okButton.appendChild(text);
-	messageOverlay.appendChild(okButton);
-
-	document.body.appendChild(backgroundDiv);
-	document.body.appendChild(messageOverlay);
-
-
-	this.show = function show( textToDisplay) {
-
-	    if (textToDisplay) {
-		DOM.textContent(loadingText, textToDisplay);
-	    }
-
-	    backgroundDiv.style.display = 'block';
-	};
-	
+	editLabel= document.createElement("label");
+	editLabel.innerHTML = 'Editor';
+	editLabel.setAttribute("style", "position:absolute;top:5%;left:70%;color:#000;font-size:25px;");
+	editor.appendChild(editLabel);
+				
+	editBox= document.createElement("textarea");
+	editBox.setAttribute("id","editor");
+	editBox.setAttribute("alipielements", "alipi");
+	editBox.setAttribute("style","position:absolute;top:15%;left:51%;min-width:450px;max-width:450px;min-height:370px;max-height:370px;font-size:15;text-align:justify;");
+	editor.appendChild(editBox);
+			
+			
 	this.activate = function activate() {
-	    backgroundDiv.style.display = 'block';
-	    messageOverlay.style.display = 'block';
-	};
+	    $(function() {
+		    $( "#editoroverlay" ).dialog({
+			    width:1000,
+			    height:550,
+			    modal: true,
+			    buttons: {
+				"+": function() {
+				    if(document.getElementById('editor').style.fontSize == '30px'){
+					// passthrough
+				    } else {
+					document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) + 1 + 'px';
+					document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) + 1 + 'px';
+				    }
+				},
+				"-": function() {
+				    if(document.getElementById('editor').style.fontSize == '10px'){
+				    } else {
+					document.getElementById('editor').style.fontSize = parseFloat(document.getElementById('editor').style.fontSize) - 1 + 'px';
+					document.getElementById('reference').style.fontSize = parseFloat(document.getElementById('reference').style.fontSize) - 1 + 'px';
+				    }
+				},
+				OK: function() {
+				    textElement = new TextElementPopup(pageEditor, true);
+				    if(editBox.value == refBox.value){
+					pageEditor.showMessage("Text unchanged");
+					} else {
+				    textElement.textButtonOnClick();
+					}
+				    $( "#editoroverlay" ).remove();
+				}				    
+			    },
+			    close: function() {
+				document.getElementById("alipiSelectedElement").removeAttribute("id", "alipiSelectedElement");
+				$( "#editoroverlay" ).remove();
+			    }
+			});
+		});
+
+	    noteLabel= document.createElement("label");
+	    noteLabel.setAttribute("id", "note-label");
+	    noteLabel.innerHTML = ' Magnify or Demagnify  ';
+	    noteLabel.setAttribute("style", "color:#000;font-size:15px;");
+	    $(noteLabel).insertAfter($(document.getElementsByClassName('ui-button-text')[0].parentNode));
+	
+	    document.getElementsByClassName('ui-button-text')[1].parentNode.style.marginRight = '635px';
+	    document.getElementsByClassName('ui-button-text')[2].parentNode.style.marginRight = '25px';
+	    document.getElementById("ui-dialog-title-editoroverlay").setAttribute("style","font-size:25px;");
+
+	}
     } ;
 
 
 
-// =========================================== Edit Window end =======================================================
+    // =========================================== Edit Window end =======================================================
 
-// ========================================== Help Window Start =================================================
+    // ========================================== Help Window Start =================================================
 
     HelpWindow = function HelpWindow(pageEditor ) {
-
-	var self = this, messageOverlay, editButton, hideOverlayCheckbox, messageDescription, messageTitle, loadingImage, loadingText, loadingDiv;
-
-	backgroundDiv = DOM.BUILDER.DIV(elementAttributes.put({id : 'helpbgdiv'}).addStyle(' z-index: 2147483646; width: 100%; height: 100%; min-height: 800px; min-width: 1024px; left: 0; top: 0; position: fixed; display: none; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=87)"; filter: alpha(opacity=87); background: #fff; background: -webkit-gradient(radial, center 40%, 900, center 40%, 0, from(rgba(0, 0, 0, 0.1)), to(rgba(0, 0, 0, 0.87))); background: -moz-radial-gradient( center 40%, circle , rgba(255, 255, 255, 0) 0px , rgba(255, 255, 255, 255) 900px);').values());
-
-	messageOverlay = DOM.BUILDER.DIV(elementAttributes.put({id : 'helpmsgoverlay'}).addStyle('z-index: 2147483647;opacity: 1.0; box-shadow: 0px 0px 5px #000; -webkit-box-shadow: 0px 0px 5px #000; -moz-box-shadow: 0px 0px 5px #000; -moz-border-radius:10px; -webkit-border-radius:10px; position:fixed; left:10%; top:15%; bottom:10%; right:10%; background:#000; display:none;').values());
-
-	messageTitle = DOM.BUILDER.H1(normalFontAttributes.addStyle('position:fixed; top:17%; left:44.5%; color:#FFF; font-size:200%; line-height:120%; font-weight:normal; text-decoration:none;').values(), 'Help Window');
-
-	messageOverlay.appendChild(messageTitle);
-
-	messageDescription = DOM.BUILDER.TEXTAREA(normalFontAttributes.put({readonly:true}).addStyle('position:fixed; top:25%; left:14%; min-width:72%; max-width:72%; min-height:50%; max-height:50%; text-align:justify; color:#FFF; font-weight: normal; font-size:105%; line-height:130%;').values(), "TEXT:- \n\t Editor - It will popup a window and allow you to modify/replace text of select element on editor(right) box. \n\t\t To delete - Empty the editor(right) box and press 'OK'. \n\t See narrations - If the selected element has other narrations then it will list, on click. \n\t Audio - It allows you to enter audio URL. \n\n IMAGE:- \n\t Replace - It allows you to enter image URL. \n\t See narrations -  If the selected element has other image narration then it will show, on click. \n\n UNDO:- Use it when you want to revert back to previous change. \n\t  Revert deleted - Press 'Undo' button twice. \n\n PUBLISH:- To publish your crafted changes to database and blog (our/your). \n\t States - To the place you are targetting. \n\t Languages - In language you publishing. \n\t Style - In what style you crafted? \n\t Author - Who is a crafter? \n\t Our blog - If you don't have blogspot ID then check this to post it to our blog.");
-
-	messageOverlay.appendChild(messageDescription);
-
-	var text = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('position:fixed; bottom:14.5%; left:49%; font-size:120%;').values(), 'OK');
-
-	editButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:13%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values());
-	editButton.onclick = function loadingEditButtonOnClick() {
-	    document.body.removeChild(document.getElementById('helpbgdiv'));
-	    document.body.removeChild(document.getElementById('helpmsgoverlay'));
-	};
-
-	editButton.appendChild(text);
-	messageOverlay.appendChild(editButton);
-
-
-	messageOverlay.appendChild(DOM.BUILDER.DIV(elementAttributes.addStyle('margin-left: 10px; margin-right: 10px;').values()));
-	editButton.appendChild(text);
-	messageOverlay.appendChild(editButton);
-
-	document.body.appendChild(backgroundDiv);
-	document.body.appendChild(messageOverlay);
-
-
-	this.show = function show( textToDisplay) {
+	
+	this.createLabels = function createLabels() {
 	    
-	    if (textToDisplay) {
-		DOM.textContent(loadingText, textToDisplay);
-	    }
+	    help = document.createElement('div');
+	    help.setAttribute("id", "helpwindow");
+	    help.setAttribute("alipielements", "alipi");
+	    help.setAttribute("style", "color:#000;line-height:16px;");
+	    document.body.appendChild(help);
+
+	    txtLabel = document.createElement("label");
+	    txtLabel.setAttribute("id", "txtlab");
+	    txtLabel.innerHTML = 'TEXT :-<p style="margin-left:50px";>Editor - It will popup a window and allow you to modify/replace text of select element on editor(right) box.</p><p style="margin-left:100px";>To delete - Empty the editor(right) box and press "OK".</p><p style="margin-left:50px";>See narrations - If the selected element has other narrations then it will list, on click.</p><p style="margin-left:50px";>Audio - It allows you to enter audio URL.</p>';
+	    help.appendChild(txtLabel);
+
+	    imgLabel = document.createElement("label");
+	    imgLabel.setAttribute("id", "imglab");
+	    imgLabel.innerHTML = ' IMAGE:- <p style="margin-left:50px";> Replace - It allows you to enter image URL.</p><p style="margin-left:50px";> See narrations -  If the selected element has other image narration then it will show, on click.</p>';
+	    help.appendChild(imgLabel);
+
+	    undoLabel = document.createElement("label");
+	    undoLabel.setAttribute("id", "undolab");
+	    undoLabel.innerHTML = 'UNDO:- Use it when you want to revert back to previous change.<p style="margin-left:50px";> Revert deleted - Press \'Undo\' button twice. </p>';
+	    help.appendChild(undoLabel);
+
+	    pubLabel = document.createElement("label");
+	    pubLabel.setAttribute("id", "publab");
+	    pubLabel.innerHTML = 'PUBLISH:- To publish your crafted changes to database and blog (our/your).<p style="margin-left:50px";>States - To the place you are targetting.</p><p style="margin-left:50px";>Languages - In language you publishing.</p><p style="margin-left:50px";>Style - In what style you crafted?</p><p style="margin-left:50px";> Author - Who is a crafter?</p><p style="margin-left:50px";>Our blog - If you don\'t have blogspot ID then check this to post it to our blog.</p>';
+	    help.appendChild(pubLabel);
+
+	    
 	};
 	
 	this.activate = function activate() {
-	    backgroundDiv.style.display = 'block';
-	    messageOverlay.style.display = 'block';
+	    $(function() {
+		    $( "#helpwindow" ).dialog({
+			    width:800,
+			    height:550,
+			    modal: true,
+			    close: function() {
+				$("#helpwindow").remove();
+			    }
+			});
+		});
 	};
 
     } ;
 
 
 
-// ========================================= Help Window end ===================================================
+    // ========================================= Help Window end ===================================================
     /*
      * Control for displaying/hiding an action panel that appears below the popup buttons.
      */
@@ -2221,56 +2214,56 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    xmlhttp.onreadystatechange = function()
 	    {
 		if(xmlhttp.readyState == 4 && xmlhttp.status== 200)
-		{
-		    if(xmlhttp.responseText=='')
 		    {
-			renDiv.style.display = 'none';
-			alert("Renarrations not available");
-		    }
-		    else {
-			for (i=0;i<= varray.length;i++) varray.pop(i);
-			for (i=0; i<=renInput.length;i++) renInput.remove(i,null);
-			
-			x=DOM.BUILDER.OPTION("please choose a Re-narration");
-			renInput.add(x,null);
-			
-			renActionControl.open(renDiv);
-			renDiv.style.display = 'block';
-			var response=xmlhttp.responseText.substring(3).split('###');
-			for (var j= 0; j< response.length ; j++){
-			    d ={}
-			    chunk = response[j].substring(1).split('&');
-			    for (var i= 0; i< chunk.length ; i++){
-				pair =chunk[i].split("::");
-				key = pair[0];
-				value = pair[1];
-				d[key] = value;
+			if(xmlhttp.responseText=='')
+			    {
+				renDiv.style.display = 'none';
+				alert("Renarrations not available");
 			    }
-			    varray.push(d);
-			}
-			for(i=0;i<varray.length;i++)	{
-			    lang_ = varray[i]['lang'];
-			    location_ = varray[i]['location']; 
-			    style_ = varray[i]['style']; 
-			    x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
+			else {
+			    for (i=0;i<= varray.length;i++) varray.pop(i);
+			    for (i=0; i<=renInput.length;i++) renInput.remove(i,null);
+			
+			    x=DOM.BUILDER.OPTION("please choose a Re-narration");
 			    renInput.add(x,null);
-			}
-			renInput.onchange=function(){
+			
+			    renActionControl.open(renDiv);
+			    renDiv.style.display = 'block';
+			    var response=xmlhttp.responseText.substring(3).split('###');
+			    for (var j= 0; j< response.length ; j++){
+				d ={}
+				chunk = response[j].substring(1).split('&');
+				for (var i= 0; i< chunk.length ; i++){
+				    pair =chunk[i].split("::");
+				    key = pair[0];
+				    value = pair[1];
+				    d[key] = value;
+				}
+				varray.push(d);
+			    }
+			    for(i=0;i<varray.length;i++)	{
+				lang_ = varray[i]['lang'];
+				location_ = varray[i]['location']; 
+				style_ = varray[i]['style']; 
+				x=DOM.BUILDER.OPTION(lang_+', '+location_+', '+style_);
+				renInput.add(x,null);
+			    }
+			    renInput.onchange=function(){
 
-			    if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
-			    else   {
-				DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
-			    renInput.selectedIndex = 0;
+				if (renInput.selectedIndex -1 < 0)  alert("please choose a Re-narration ");
+				else   {
+				    DOM.evaluate(varray[renInput.selectedIndex - 1]['xpath'],varray[renInput.selectedIndex - 1]['data']);};
+				renInput.selectedIndex = 0;
+			    }
+			
+			    undoButton.onclick =function(){
+				DOM.evaluate(xpath,previousData);
+			    };
+			
 			}
-			
-			undoButton.onclick =function(){
-			    DOM.evaluate(xpath,previousData);
-			};
-			
 		    }
-		}
 	    }
-	    xmlhttp.open("POST","http://dev.a11y.in/narration",true);
+	    xmlhttp.open("POST","http://y.a11y.in/narration",true);
 	    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	    xmlhttp.send(data);
 	    
@@ -2286,55 +2279,96 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     
     //******************************** Shalini - Changed AudioupdatePopupAction from ImageUpdatePopupAction *****************
 
-    function AudioUpdateByUrl(pageEditor, actionControl) {
+    AudioUpdateByUrl = function AudioUpdateByUrl(pageEditor) {
 	var self = this, popupDiv, audioUrlInput, randomInput, audioUrlForm, selectedElement, targetName,audioElement;
+	// var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
+	// addUrlLabel.innerHTML = 'Add URL';
 
-	var addUrlLabel = DOM.BUILDER.SPAN(normalFontAttributes.addStyle('width: 100%; display: block; float: left; font-size: 10px;position:relative; margin-top: 5px;margin-left: 0px; margin-right: 5px; margin-bottom: 5px; background: transparent; color: #747474; text-shadow: 0 1px 0 #FFFFFF; text-align: left;').values());
-	addUrlLabel.innerHTML = 'Add URL';
-
-	audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
-	randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
-    	audioUrlForm = DOM.BUILDER.FORM(elementAttributes.values(),
-					audioUrlInput,
-					DOM.BUILDER.INPUT(editSubmitAttributes.values()));
-
-	audioUrlForm.onsubmit = function updateFormOnSubmit() {
-            var url = audioUrlInput.value;
-	    updateAudio(url);
-            return false;
+	// audioUrlInput = DOM.BUILDER.INPUT(editTextInputAttributes.addStyle('display:block; background: #FFFFFF;').values());
+	// randomInput = DOM.BUILDER.INPUT(editAttributes.put({ name : 'random', type : 'hidden', value : '1' }).values());
+    	// audioUrlForm = DOM.BUILDER.FORM(elementAttributes.values(),
+	// 				audioUrlInput,
+	// 				DOM.BUILDER.INPUT(editSubmitAttributes.values()));
+	this.display = function display() {
+	    audioDiv = document.createElement("div");
+	    audioDiv.setAttribute("id", "audiodiv");
+	    audioDiv.setAttribute("alipielements", "alipi");
+	    audioDiv.setAttribute("title", "Enter ogg file link");
+	    document.body.appendChild(audioDiv);
+	    
+	    urlInput = document.createElement("input");
+	    urlInput.setAttribute("id", "audiourl");
+	    urlInput.setAttribute("alipielements", "alipi");
+	    urlInput.setAttribute("type", "text");
+	    urlInput.setAttribute("style", "width:300px;");
+	    audioDiv.appendChild(urlInput);
+	    
+	    $(function() {
+		    $( "#audiodiv" ).dialog({
+			    width:350,
+				height:150,
+				modal: true,
+				close: function() {
+				$("#audiodiv").remove();
+			    },
+				buttons: {
+				OK: function() {
+				    var url = urlInput.value;
+				    n = url.length;
+				    if(url.substring(n-4) == '.ogg'){
+				    	updateAudio(url);
+					} else {
+					alert("Invalid input! please provide .ogg audio file");
+					}
+				    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
+				    $("#audiodiv").remove();
+				} 
+			    }
+			    
+			});
+		});
 	};
+	
+	
+	// function updateFormOnSubmit() {
+        //     var url = urlInput.value;
+	//     updateAudio(url);
+        //     return false;
+	// };
 
-	audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
+	// audioDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 100%; float:left; position: relative; margin: 0px auto auto 10px; display: block;').values(), addUrlLabel, audioUrlForm);
 
-	audioActionControl = new PopupActionControl(actionControl);
+	// audioActionControl = new PopupActionControl(actionControl);
 
-	this.getActionDiv = function getActionDiv() {
-            return audioDiv;
-	};
+	// this.getActionDiv = function getActionDiv() {
+        //     return audioDiv;
+	// };
 
-	this.open = function open(element) {
-	    audioActionControl.open(audioDiv);
-            audioUrlInput.value = '';
-            selectedElement = element;
-            audioDiv.style.display = 'block';
-	};
+	// this.open = function open(element) {
+	//     audioActionControl.open(audioDiv);
+        //     audioUrlInput.value = '';
+        //     selectedElement = element;
+        //     audioDiv.style.display = 'block';
+	// };
 
-	this.close = function close() {
-            selectedElement = null;
-            audioDiv.style.display = 'none';
-	};
+	// this.close = function close() {
+        //     selectedElement = null;
+        //     audioDiv.style.display = 'none';
+	// };
 
 	updateAudio = function updateAudio(src) {
 	    var command;
-	    if (audioElement) {
-		command = {
-		    command : 'AUDIO_UPDATE',
-		    element : audioElement,
-		    elementId : audioElement.getAttribute('m4pageeditid'),
-		    data : src,
-		    previousData : originalHref
-		};
-	    } else {
+	    selectedElement = document.getElementById("alipiSelectedElement");
+	    // audioElement = urlInput;
+	    //if (audioElement) {
+	     //	command = {
+	     //	    command : 'AUDIO_UPDATE',
+	     //	    element : audioElement,
+	     //	    elementId : audioElement.getAttribute('m4pageeditid'),
+	     //	    data : src,
+	    //	    previousData : originalHref
+	     //	};
+	    // } else {
 		command = {
 		    command : 'AUDIO_CREATE',
 		    element : selectedElement,
@@ -2345,21 +2379,21 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    data : src,
 		    previousData : ''
 		};
-	    }
+	    //	    }
 	    pageEditor.commandApply(command);
 	};
 
-    }
+    };
 
 
     //*******************************************************************
 
     /**
-     * Action for updating an image. //Yass to be edited
+     * Action for updating an image.
      */
     function ImageUpdatePopupAction(pageEditor, actionSlot, updateType) {
 	var self = this, selectedElement, imagePopupDiv, backgroundUploadPopup, uploadPopupDiv, imageUrlPopup, imageUrlDiv,
-	imageSizeSpan, imageFitCheckbox, headerDiv, updateSize, fitElement, imageActionControl;
+	    imageSizeSpan, imageFitCheckbox, headerDiv, updateSize, fitElement, imageActionControl;
 
 	imagePopupDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('position: relative; overflow: hidden !important; display: block; margin-top:3px; height: auto !important; height: 120px; margin-bottom: 10px;').values());
 	headerDiv = DOM.BUILDER.DIV(normalFontAttributes.addStyle('position: relative;').values());
@@ -2469,8 +2503,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	function ImageUpdateByUpload(actionControl, uploadButtonText) {
 	    var self = this,  uploadForm, uploadingMessage, uploadIframe, fileInput, pageSlugInput,
-            uploadSlugInput, targetName, randomInput, selectedElement = null, sizingImage, showLoading, uploadButton,
-            uploadPopupDiv;
+		uploadSlugInput, targetName, randomInput, selectedElement = null, sizingImage, showLoading, uploadButton,
+		uploadPopupDiv;
 
 	    uploadPopupDiv = DOM.BUILDER.DIV(popupContainerAttributes.addStyle('width: 110px; overflow: none; display: block; position: relative; margin: 10px auto auto 10px; float:left;').values());
 	    uploadingMessage = DOM.BUILDER.SPAN(editTitleAttributes.addStyle("display:none").values(), "Loading...");
@@ -2507,40 +2541,40 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	    uploadIframe = DOM.BUILDER.IFRAME( { name : targetName, src : 'https://bo.lt/app/asset/empty.html?p=622fd096a39f5c36a6e06e41a9963dafaad61079', style : 'display: none' });
 	    UTIL.addEvent(uploadIframe, 'load', function uploadIframeOnLoad() {
-		var iframeBody;
-		if (uploadIframe.contentDocument) {
-		    iframeBody = uploadIframe.contentDocument.body;
-		} else if (uploadIframe.contentWindow) {
-		    iframeBody = uploadIframe.contentWindow.document.body;
-		}
-		var upload, resultText = DOM.textContent(iframeBody);
+		    var iframeBody;
+		    if (uploadIframe.contentDocument) {
+			iframeBody = uploadIframe.contentDocument.body;
+		    } else if (uploadIframe.contentWindow) {
+			iframeBody = uploadIframe.contentWindow.document.body;
+		    }
+		    var upload, resultText = DOM.textContent(iframeBody);
 
-		if (!/^\s*\{.*\}\s*/.test(resultText) || selectedElement == null) {
-		    return;
-		}
+		    if (!/^\s*\{.*\}\s*/.test(resultText) || selectedElement == null) {
+			return;
+		    }
 
-		try {
-		    upload = eval("(" + resultText + ")");
-		} catch (error) {
-		    console.error("Unable to interpret the upload image response", error);
-		    actionControl.handleError();
-		    return;
-		}
+		    try {
+			upload = eval("(" + resultText + ")");
+		    } catch (error) {
+			console.error("Unable to interpret the upload image response", error);
+			actionControl.handleError();
+			return;
+		    }
 
-		if (!upload.success) {
-		    console.error("Unable to upload the specified file:", upload.error);
-		    actionControl.handleError();
-		    return;
-		}
+		    if (!upload.success) {
+			console.error("Unable to upload the specified file:", upload.error);
+			actionControl.handleError();
+			return;
+		    }
 
-		sizingImage = new Image();
-		sizingImage.onload = function sizingImageOnLoad() {
-		    self.onImageLoad(selectedElement, upload.url, { width: sizingImage.width, height: sizingImage.height });
-		    actionControl.actionComplete();
-		};
-		sizingImage.src = upload.url;
-		randomInput.value = randomInput.value + 1;
-	    });
+		    sizingImage = new Image();
+		    sizingImage.onload = function sizingImageOnLoad() {
+			self.onImageLoad(selectedElement, upload.url, { width: sizingImage.width, height: sizingImage.height });
+			actionControl.actionComplete();
+		    };
+		    sizingImage.src = upload.url;
+		    randomInput.value = randomInput.value + 1;
+		});
 
 	    uploadPopupDiv.appendChild(uploadForm);
 	    uploadPopupDiv.appendChild(uploadingMessage);
@@ -2628,8 +2662,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
      */
     function EditableElementPopup(pageEditor, imageElement) {
 	var self = this, popupControl, deleteElement, imagePopupDiv, deleteButton,renButton,selectedElement,
-	linkUpdateAction, linkButton,  closeButton, imageButton, backgroundButton, redArrow,imageUpdateAction,
-	imageUpdateDiv, uploadMode, backgroundButtonText, imageButtonText, buttonPanel, upArrow, actionSlot,subMenuAction,renUpdateAction;
+	    linkUpdateAction, linkButton,  closeButton, imageButton, backgroundButton, redArrow,imageUpdateAction,
+	    imageUpdateDiv, uploadMode, backgroundButtonText, imageButtonText, buttonPanel, upArrow, actionSlot,subMenuAction,renUpdateAction;
 
 	this.popupAt = function popupAt(element, popX, popY) {
 	    popupControl.openAt(element, popX, popY);
@@ -2734,13 +2768,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
      */
     function TextElementPopup(pageEditor) {
 	var self = this, updateText, deleteElement, textPopupDiv, selectedElement, originalTextContent, deleteButton, 
-	imageUpdateAction, popupControl, linkUpdateAction, linkButton, closeButton, textButton, doneButton,
-	imageUpdateDiv, backgroundButton, redArrow, buttonPanel, upArrow, actionSlot,renButton, variablePassing;
+	    imageUpdateAction, popupControl, linkUpdateAction, linkButton, closeButton, textButton, doneButton,
+	    imageUpdateDiv, backgroundButton, redArrow, buttonPanel, upArrow, actionSlot,renButton, variablePassing;
 
 	this.popupAt = function popupAt(element, popX, popY) {
 	    popupControl.openAt(element, popX, popY);
 	};
-
 	
 	this.popdown = function popdown(saveChanges) {
 	    popupControl.close(saveChanges);
@@ -2750,7 +2783,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	upArrow = DOM.BUILDER.SPAN(greyArrowAttributes.values());
 	actionSlot = DOM.BUILDER.DIV(actionPanelAttributes.values());
 	redArrow = DOM.BUILDER.SPAN(redArrowAttributes.values());
-
 	textPopupDiv = DOM.BUILDER.DIV(popupContainerAttributes.values());
 
 	var eatKeyboardEvents = function eatKeyboardEvents(event) {
@@ -2759,22 +2791,22 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	var handleKeyDown = function handleKeyDown(event) {
 	    switch (event.keyCode) {
 	    case 13:
-		// Enter key
-		self.popdown(true);
-		event.stopPropagation();
-		event.preventDefault();
+	    // Enter key
+	    self.popdown(true);
+	    event.stopPropagation();
+	    event.preventDefault();
 
-		return false;
+	    return false;
 	    default:
-		eatKeyboardEvents(event);
+	    eatKeyboardEvents(event);
 	    }
 	};
 
 	popupControl = new PopupControl(pageEditor, textPopupDiv, false);
 	popupControl.onOpen = function onOpen(element) {
 	    selectedElement = element;
-	    originalTextContent = DOM.textContent(selectedElement);
-	    actionSlot.style.marginLeft = (textButton.offsetWidth) + 'px';
+	    originalTextContent = DOM.textContent(selectedElement);       
+	    //	    actionSlot.style.marginLeft = (textButton.offsetWidth) + 'px';
 	    UTIL.addEvent(selectedElement, 'keydown', handleKeyDown);
 	    UTIL.addEvent(selectedElement, 'keyup', eatKeyboardEvents);
 	    UTIL.addEvent(selectedElement, 'keypress', eatKeyboardEvents);
@@ -2786,11 +2818,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 	popupControl.onClose = function onClose(saveChanges) {
-	    upArrow.style.display = 'none';
+ 	    upArrow.style.display = 'none';
 	    if (saveChanges && (DOM.textContent(selectedElement) != originalTextContent)) // || (saveChanges && hasAudio==true)
-	    {
-		updateText();
-	    } else {
+		{
+		    updateText();
+		} else { 
 		DOM.textContent(selectedElement, originalTextContent);
 	    }
 	    selectedElement = null;
@@ -2811,21 +2843,23 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	doneButton = createActionButton(doneImage, 'Editor', 'border-right: none;' + leftBorderStyle);
 	doneButton.onclick = function doneButtonOnClick(elements) {
 	    editWindow = new EditWindow(pageEditor);
- 	    editWindow.activate();
-	    document.getElementById('originaltext').value = selectedElement.textContent;
-	    document.getElementById('texteditor').value = selectedElement.textContent;
-	    document.getElementById('editoroverlay').appendChild(textButton);
+	    document.getElementById('reference').value = selectedElement.textContent;
+	    document.getElementById('editor').value = selectedElement.textContent;
 	    selectedElement.setAttribute('id', 'alipiSelectedElement');
+	    document.getElementById("editor").removeAttribute("readonly");
+	    // 	    DOM.textContent(selectedElement, originalTextContent);
+	    editWindow.activate();	    
+	    self.popdown(false);
+	    //	    upArrow.style.display = 'none';
+	    return false;
+
 	};
 
-	textButton = DOM.BUILDER.BUTTON(panelButtonAttributes.addStyle('position:fixed; left:46%; bottom:12%; color:#FFF; width:8%; height:5%; background: #777; background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #777), color-stop(1, #fff)); background: -moz-linear-gradient(center bottom, #777 0%, #fff 100%); border: 1px solid #777; border-radius: 3px; border: 1px solid #777; box-shadow: #fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -moz-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px; -webkit-box-shadow:#fff 0px 0px 2px 0px inset, rgba(0, 0, 0, .5) 0px 0px 2px 0px;').values(), 'OK');
-	textButton.onclick = function textButtonOnClick() {
-	    document.getElementById('alipiSelectedElement').textContent = document.getElementById('texteditor').value;
-	    document.body.removeChild(document.getElementById('editoroverlay'));
-	    document.body.removeChild(document.getElementById('editorbgdiv'));
-	    handleKeyDown;
-	    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
+
+	this.textButtonOnClick = function textButtonOnClick() {
 	    self.popdown(true);
+	    document.getElementById('alipiSelectedElement').textContent = document.getElementById('editor').value;
+	    document.getElementById('alipiSelectedElement').removeAttribute('id', 'alipiSelectedElement');
 	    return false;
 	};
 
@@ -2844,14 +2878,17 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	audioUpdateAction = new AudioUpdateByUrl(pageEditor, actionSlot);
 	audioUpdateAction.onComplete = function audioUpdateActionOnComplete() {
-	    self.popdown();
+	    self.popdown(false);
 	};
 	
 	var audioImage = 'http://dev.a11y.in/alipi/images/audio.png';
 	audioButton = createActionButton(audioImage,'Audio','border-right:none;');
 	audioButton.onclick = function audioButtonOnClick() {
-	    popupControl.showAction(audioUpdateAction);
-	    return false;
+	    selectedElement.setAttribute('id', 'alipiSelectedElement');
+	    audioUpdateAction = new AudioUpdateByUrl(pageEditor);
+	    audioUpdateAction.display();
+	    self.popdown(true);
+ 	    return false;
 	};
 
 
@@ -2886,8 +2923,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		elementType : 'text',
 		data : DOM.textContent(selectedElement),
 		previousData : originalTextContent
-            };
-	    pageEditor.commandApply(command);;
+            }; 
+	    pageEditor.commandApply(command); 
 	    if (DOM.textContent(selectedElement).length == 0) {
 		deleteElement();
 	    }
@@ -2909,7 +2946,6 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     }
 
 
-
     /**
      * Overlay bar which can function in either visual editor or html editor mode.
      */
@@ -2918,77 +2954,99 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	var moveDiv, editModeChangeOverlayDiv, buttonDiv, editModeChangeButtonDiv, editModeChangeSaveButton, editModeChangeDiscardButton;
 	var redButtonStyleAttributes, fillUpButtonStyleAttributes, firstRowDivOffset, calculateScrollPositionY, wrapperDiv,showKeepOriginalOverlay, publishOptions = new PublishOptions();
 
-	messageDiv = DOM.BUILDER.DIV(editAttributes.addStyle('font-weight:italic; font-size:20px; font-family: Helvetica Neue,Helvetica,Arial,Sans-serif; position:absolute; left:30%; width:100%; display:inline-block;  color:#fff;').values());
 
-	redButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; top:-13px; right:04%; width:22%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
+	overlayDiv = document.createElement("div");
+	overlayDiv.setAttribute("id", "overlay-div");
+	overlayDiv.setAttribute("alipielements", "alipi");
+	overlayDiv.setAttribute("style", "position:fixed; z-index:1001; left:0; top:0; min-width:800px; width:100%; height:30px; background-color:rgba(0, 0, 0, 0.5);");
+	document.body.appendChild(overlayDiv);
 
-	undoButtonStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:35%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
 
-	helpLinkStyleAttributes = panelButtonAttributes.addStyle('position:absolute; left:0%; top:-13px; width:15%; height:25px; color:#FFF; font-size:18px; text-align:center; background: #AAA; background: -moz-linear-gradient(center bottom, #000 0%, #FFF 100%); -webkit-linear-gradient(center bottom, #000 0%, #FFF 100%); border: 1px solid #777; border-radius: 3px; -moz-border-radius:10px; -webkit-border-radius:3px; border: 1px solid #777;').values();
-
-	publishButton = DOM.BUILDER.BUTTON(redButtonStyleAttributes, 'Publish'); 
-
-	publishButton.onclick = function publishButtonOnClick() {
-	    if (pageEditor.hasChangesPending() /* && (pageEditor.formUncomplete() ==false) */ ) {
- 		targetWindow = new TargetWindow(pageEditor);
- 		targetWindow.activate();
-	
-		okButton.onclick = function okButtonOnClick() { 
-		    targetWindow.okClick();
+	image = document.createElement("img");
+	image.setAttribute("id", "close-image");
+	image.setAttribute("alipielements", "alipi");
+	image.setAttribute("src", "http://dev.a11y.in/alipi/images/close_button.png");
+	image.setAttribute("style", "position:fixed;left:1px;width:25px;height:28px;");
+	overlayDiv.appendChild(image);
+	image.onclick=function(){
+	    answer = confirm("Do you really want to exit the editor?")
+	    if (answer !=0)
+		{
+		    window.location.reload();
 		}
-	    }
-	    else{
-		pageEditor.showMessage("Nothing to publish");
-	    }
-	    return false;
-	};
+	}
 
-	this.blogpost = function blogpost() {
-	    pageEditor.commandPublish();
-	    this.disabled=true;
-	    pageEditor.showMessage("... Please wait, your blog is being posted");
-	};
-	// End of okButton function
 
-	undoButton = DOM.BUILDER.BUTTON(undoButtonStyleAttributes, 'Undo');
-	undoButton.onclick = function undoButtonOnClick() {
-	    pageEditor.commandUndo();
-	    return false;
-	};
+	messageDiv = document.createElement("div");
+	messageDiv.setAttribute("id", "message-div");
+	messageDiv.setAttribute("alipielements", "alipi");
+	messageDiv.setAttribute("style", "position:fixed;left:10%;top:0;font-size:23px;font-weight:bold;color:#ffe;");
+	overlayDiv.appendChild(messageDiv);
 
-	helpLink = DOM.BUILDER.BUTTON(helpLinkStyleAttributes, 'Help');
-	helpLink.onclick = function undoButtonOnClick() {
+	helpLink = document.createElement("input");
+	helpLink.setAttribute("id", "help");
+	helpLink.setAttribute("alipielements", "alipi");
+	helpLink.setAttribute("type", "submit");
+	helpLink.setAttribute("Value", "Help");
+	helpLink.setAttribute("style", "position:fixed;top:0;right:35%;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	overlayDiv.appendChild(helpLink);
+	helpLink.onclick = function helpLinkOnClick() {
 	    helpWindow = new HelpWindow(pageEditor);
+	    helpWindow.createLabels();
 	    helpWindow.activate();
 
 	};
 
 
-	editModeChangeButtonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), editModeChangeSaveButton, editModeChangeDiscardButton);
+	undoButton = document.createElement("input");
+	undoButton.setAttribute("id", "undo");
+	undoButton.setAttribute("alipielements", "alipi");
+	undoButton.setAttribute("type", "submit");
+	undoButton.setAttribute("Value", "Undo");
+	undoButton.setAttribute("style", "position:fixed;top:0;right:20%;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	overlayDiv.appendChild(undoButton);
+	undoButton.onclick = function undoButtonOnClick() {
+	    pageEditor.commandUndo();
+	    return false;
+	};
 
-	buttonDiv = DOM.BUILDER.DIV(editAttributes.addStyle('width: 500px; position: relative; float: right; margin-right: 8px;').values(), undoButton, publishButton, helpLink);
 
-	firstRowDiv = DOM.BUILDER.DIV(DOM.BUILDER.DIV(editAttributes.addStyle('width:500px; position: absolute; top: 0; left: 1%;').values(), messageDiv), buttonDiv);
-
-	var image = DOM.BUILDER.IMG(normalFontAttributes.put({src: 'http://dev.a11y.in/alipi/images/close_button.png'}).addStyle('position:fixed; top:0.5%; width:25px; height:25px;').values());
-
-	wrapperDiv =  DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit; overflow-x: visible; position: fixed; z-index: 2147483645; left: 0; top: 0;min-width:800px; width: 100%; height:30px;; background-color: rgba(0, 0, 0, 0.5);').values(), image, firstRowDiv);
-
-
-	overlayDiv = DOM.BUILDER.DIV(fontTypeAttributes.addStyle('overflow: inherit;').values(), wrapperDiv);
-
-	document.body.appendChild(overlayDiv);
-
-	image.onclick=function(){
-	    answer = confirm("Do you really want to exit the editor?")
-	    if (answer !=0)
-	    {
-		window.location.reload();
+	publishButton = document.createElement("input");
+	publishButton.setAttribute("id", "publish");
+	publishButton.setAttribute("alipielements", "alipi");
+	publishButton.setAttribute("type", "submit");
+	publishButton.setAttribute("Value", "Publish");
+	publishButton.setAttribute("style", "position:fixed;top:0;right:5%;font-size:18px;font-weight:bold;width:100px;height:30px;");
+	overlayDiv.appendChild(publishButton);
+	//	var dialog = 0;
+	publishButton.onclick = function publishButtonOnClick() {
+	    if (pageEditor.hasChangesPending()) {
+		targetWindow = new TargetWindow(pageEditor);
+		//	if (dialog == 0) {
+		    targetWindow.createDialogBox();
+		//   dialog = 1;
+		//	}
+		targetWindow.activate();
+	    } else {
+		pageEditor.showMessage("Nothing to post");
 	    }
-	}
+	};
 
+		
+	
+	this.blogpost = function blogpost() {
+	    if((locName.value == "" && document.getElementById("loct-select") === null) || (langName.value == "" && document.getElementById("langs-select") === null) || styleSelect.value == "" || author.value == "" || (ourcheck.checked == false && yourcheck.checked == false)) {
+		    alert("Please give all the details, it will be used further");
+		}
+	    else {
+		pageEditor.commandPublish();
+		pageEditor.showMessage("... Please wait, your blog is being posted");
+		$('#targetoverlay').remove();
+	    }
+	};
+	// End of okButton function
+	
 	this.show = function show(activate) {
-	    overlayDiv.style.display = 'block';
 	    var disabled = true;
 	    var opacity = '0.4';
 	    if (activate) {
@@ -3009,15 +3067,16 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 
+
 	function PublishOptions() {
 	    var self = this, wrapperDiv, keepOriginalCheckbox, activateOptionsTimerId, cancelTimer, activatePublishOptions;
 	    var checkboxId = 'm4PublishOptionsCheckbox-' +  new Date().getTime();
 	    keepOriginalCheckbox = DOM.BUILDER.INPUT(
-		editAttributes.put({
-		    name : 'Publish Options',
-		    type : 'checkbox', id: checkboxId}).addStyle(
-			'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; width: 14px; height: 14px; margin: 0; padding: 0; position: relative; background: transparent;').values()
-            );
+						     editAttributes.put({
+							     name : 'Publish Options',
+							     type : 'checkbox', id: checkboxId}).addStyle(
+													  'font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; width: 14px; height: 14px; margin: 0; padding: 0; position: relative; background: transparent;').values()
+						     );
 	    keepOriginalCheckbox.onclick = function() {
 		keepOriginal = keepOriginalCheckbox.checked;
 	    };
@@ -3027,13 +3086,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    wrapperDiv =  DOM.BUILDER.DIV(editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table; vertical-align: middle; z-index: 2147483647; margin: 0; width: 134px; height: 33px; line-height: 33px; position: '+ position+ '; right: 10px; background:'+ backgroundImage + ' ; display:none;').values(), DOM.BUILDER.SPAN(editAttributes.addStyle(('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: table-cell; vertical-align: middle; height: 14px; hasLayout=true;')).values(), DOM.BUILDER.SPAN(editAttributes.addStyle('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; font-size: 10px; display: inline; vertical-align: middle; height: 10px; width: 14px; padding: 0; margin: 1px 0 0 13px;').values(), keepOriginalCheckbox), DOM.BUILDER.LABEL(normalFontAttributes.put({'for' : checkboxId}).addStyle(('font-family: Helvetica Neue, Helvetica, Ariel, Sans-serif; display: inline; font-size: 10px; background: transparent; color: #E9E9E9; padding: 0 0 0 5px;')).values(),'Save as new page.')));
 
 	    UTIL.addEvent(wrapperDiv, 'mouseout', function publishButtonMouseOut(event) {
-		self.hide();
-	    });
+		    self.hide();
+		});
 
 	    UTIL.addEvent(wrapperDiv, 'mouseover', function publishButtonMouseOver(event) {
-		cancelTimer();
-		activatePublishOptions(true);
-	    });
+		    cancelTimer();
+		    activatePublishOptions(true);
+		});
 
 	    document.body.appendChild(wrapperDiv);
 
@@ -3050,8 +3109,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		activatePublishOptions(true);
 		cancelTimer();
 		activateOptionsTimerId = setTimeout(function() {
-		    activatePublishOptions(false);
-		}, 5000);
+			activatePublishOptions(false);
+		    }, 5000);
 	    };
 
 	    this.hide = function hide() {
@@ -3089,13 +3148,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     function PageShortcuts(pageEditor) {
 	this.enable = function enable() {
 	    DOM.addListener('keydown', function keydownHandler(event) {
-		switch (event.keyCode) {
-		case 27:
+		    switch (event.keyCode) {
+		    case 27:
 		    // ESC
-		    event.preventDefault();
-		    event.stopPropagation();
-		    pageEditor.close();
-		    return false;
+		    // event.preventDefault();
+		    // event.stopPropagation();
+		    // pageEditor.close();
+		    // return false;
 		    // case 77:
 		    //   // "m"
 		    //   if (pageEditor.hasFocus()) {
@@ -3113,8 +3172,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    //     pageEditor.commandUndo();
 		    //   }
 		    return false;
-		}
-	    }, true);
+		    }
+		}, true);
 	}
     }
 
@@ -3127,20 +3186,20 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	this.hasChangesPending = function hasChangesPending() {
 	    return history.length > 0;
 	};
-	this.formUncomplete = function formUnomplete(){
-	    return (locName == '' &&  langName=='' && styleName == '' );
-	};
 	
 	this.apply = function apply(command) {
 	    var poofPosition, poofDiv;
-
 	    switch (command.command) {
             case 'TEXT_UPDATE':
+		command.element = document.getElementById("alipiSelectedElement");
+		command.previousData = document.getElementById("alipiSelectedElement").textContent;
+		command.data = document.getElementById("editor").value;
 		DOM.textContent(command.element, command.data);
 		pageEditor.showMessage('Text changed');
 		break;
             case 'AUDIO_SRC_UPDATE':
 		textElementPopup.hasAudio = true;	
+		command.previousData = "";
 		pageEditor.showMessage('Audio updated');
 		break;
 
@@ -3151,12 +3210,12 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		document.body.appendChild(poofDiv);
 
 		UTIL.animate(function(index, last) {
-		    if (last) {
-			document.body.removeChild(poofDiv);
-		    } else {
-			poofDiv.style.backgroundPosition = '0 -' + (index * 32) + 'px';
-		    }
-		}, 5, 100);
+			if (last) {
+			    document.body.removeChild(poofDiv);
+			} else {
+			    poofDiv.style.backgroundPosition = '0 -' + (index * 32) + 'px';
+			}
+		    }, 5, 100);
 
 		DOM.overrideStyleProperty(command.element, 'display', 'none');
 		pageEditor.showMessage('Section deleted');
@@ -3204,11 +3263,13 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		break;
 		
             case 'AUDIO_CREATE':
+	        selectedElement = document.getElementById("alipiSelectedElement");
 		audioElement = document.createElement('audio');
+		audioElement.setAttribute("id", "audiotag");
 		audioElement.setAttribute('src',command.data);
 		audioElement.setAttribute('controls','controls');
-		command.element.appendChild(audioElement);
-		audioElement.play();
+		audioElement.setAttribute('style', 'display:table;');
+		$(audioElement).insertBefore($(selectedElement));		
 		pageEditor.showMessage('Audio added');
 		break;
 
@@ -3251,11 +3312,20 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		    }
 		    imageElement.setRawImageSize(command.previousData.rawImageSize)
 
-		    pageEditor.showMessage('Image change undone');
+			pageEditor.showMessage('Image change undone');
 		    break;
 		    
 		case 'AUDIO_SRC_UPDATE':
+		    command.element.remove();
+		    pageEditor.showMessage('Link removed');
 		    break;
+
+		case 'AUDIO_CREATE':
+		    audio_remove=command.element.previousSibling;
+		    command.element.parentNode.removeChild(audio_remove);
+		    pageEditor.showMessage('Audio change undone');
+		    break;
+
 		case 'ANCHOR_UPDATE':
 		    command.element.setAttribute('href', command.previousData);
 		    pageEditor.showMessage('Link change undone');
@@ -3276,67 +3346,57 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	this.publish = function publish() {
 	    var result;
-	    if(document.getElementById('ourcheck').checked == false)
-	    {
-		localStorage.myContent = buildDataString();
-		window.location.href = "http://dev.a11y.in/test.html";
-		window.reload();
-	    }
-	    else{
-		
-		AJAX.post('http://dev.a11y.in/test',
-	    		  buildDataString(), function(result) {
-	    		      ajaxResultProcessor.processPublishedResponse(result);
-	    		  });
-	    }
+	    if(document.getElementById('your-check').checked) 
+		    {
+			localStorage.myContent = buildDataString();
+			window.location.href = "http://y.a11y.in/test.html";
+			window.reload();
+		    }
+	    else 
+		{
+		    AJAX.post('http://y.a11y.in/test',  buildDataString(), function(result) {
+			    ajaxResultProcessor.processPublishedResponse(result);
+			});
+		}
 	};
+	
+	// this.switchMode = function switchMode(saveChanges) {
+	//     var result, requestParameters;
 
-	this.switchMode = function switchMode(saveChanges) {
-	    var result, requestParameters;
+	//     requestParameters = '?slug=' + pageSlug + '&uploadSlug=' + uploadSlug;
+	//     if (successUrl) {
+	// 	requestParameters = requestParameters + '&successUrl=' + encodeURIComponent(successUrl);
+	//     }
 
-	    requestParameters = '?slug=' + pageSlug + '&uploadSlug=' + uploadSlug;
-	    if (successUrl) {
-		requestParameters = requestParameters + '&successUrl=' + encodeURIComponent(successUrl);
-	    }
-
-	    if (saveChanges) {
-		result = AJAX.post('/app/page-edit/switch-edit-mode' + requestParameters,
-				   buildDataString());
-		ajaxResultProcessor.processSwitchModeResponse(result);
-	    } else {
-		window.location.href = 'https://bo.lt/app/page-edit/html' + requestParameters;
-	    }
-	};
-
+	//     if (saveChanges) {
+	// 	result = AJAX.post('/app/page-edit/switch-edit-mode' + requestParameters,
+	// 			   buildDataString());
+	// 	ajaxResultProcessor.processSwitchModeResponse(result);
+	//     } else {
+	// 	window.location.href = 'https://bo.lt/app/page-edit/html' + requestParameters;
+	//     }
+	// };
+	
 	buildDataString = function buildDataString() {
-	    
 	    var check_xpath = [], temp_history = [], index = [];
-	    for(x=0; x<history.length; x++) 
-	    {
+	    for(x=0; x<history.length; x++) {
 		check_xpath.push(history[x].xpath);
 	    }
-	    for(i=0; i<check_xpath.length-1; i++) 
-	    {
-		for(j=i+1; j<check_xpath.length; j++) 
-		{
-		    if (check_xpath[i] == check_xpath[j]) 
-		    {
-			index.push(i);  
-		    } 
+	    for(i=0; i<check_xpath.length-1; i++) {
+		for(j=i+1; j<check_xpath.length; j++) {
+		    if ((check_xpath[i] == check_xpath[j]) && (history[i].elementType == history[j].elementType)) {
+			    index.push(i);
+			} 
 		}
 	    }
-	    if (index.length > 0) 
-	    {
-		for (var z=0; z<index.length; z++) 
-		{
+	    if (index.length > 0) {
+		for (var z=0; z<index.length; z++) {
 		    delete history[index[z]];
 		}
 	    }
-
-	    for (var x=0; x<history.length; x++)
-	    {
-		if (history[x] != undefined)
-		{
+	    
+	    for (var x=0; x<history.length; x++) {
+		if (history[x] != undefined) {
 		    temp_history.push(history[x]);
 		}
 	    }
@@ -3346,32 +3406,38 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    var command, buffer;
 	    buffer = new UTIL.StringBuffer();
 	    UTIL.forEach(history, function(index, command) {
-		buffer.append('###'); //separates the commands
-		buffer.append('about=');  //url=about    //removed '&' on purpose
-		buffer.append(window.location.search.split('=')[1]);
-		buffer.append('&lang=');//lang
-		buffer.append(encodeURIComponent(langName));
-		buffer.append('&location=');//location
-		buffer.append(encodeURIComponent(locName));
-		buffer.append('&style=');//style
-		buffer.append(encodeURIComponent(styleSelect.value));
-		buffer.append('&blog=');  //blog where to post
-		buffer.append(encodeURIComponent("blog"));
-		buffer.append('&elementtype='); // text, audio, img
-		buffer.append(encodeURIComponent(command.elementType));
-		buffer.append('&xpath=');//xpath
-		buffer.append(encodeURIComponent(command.xpath));
-		buffer.append('&data=');  //data
-		buffer.append(encodeURIComponent(command.data));
-		buffer.append('&author='); //author
-		if (author.value == '') {
-		    buffer.append(encodeURIComponent('Anonymous'));
-		} else {
-		    buffer.append(encodeURIComponent(author.value));
-		}
-	    }); 
+		    buffer.append('###'); //separates the commands
+		    buffer.append('about=');  //url=about    //removed '&' on purpose
+		    buffer.append(window.location.href);
+		    buffer.append('&lang=');//lang
+		    if (langName.value != "" ) 
+			buffer.append(encodeURIComponent(langName.value));
+		    else
+			buffer.append(encodeURIComponent(document.getElementById('langs-select').value));
+		    buffer.append('&location=');//location
+		    if (locName.value != '') 
+			buffer.append(encodeURIComponent(locName.value));
+		    else
+			buffer.append(encodeURIComponent(document.getElementById('loct-select').value));
+		    buffer.append('&style=');//style
+		    buffer.append(encodeURIComponent(styleSelect.value));
+		    buffer.append('&blog=');  //blog where to post
+		    buffer.append(encodeURIComponent("blog"));
+		    buffer.append('&elementtype='); // text, audio, img
+		    buffer.append(encodeURIComponent(command.elementType));
+		    buffer.append('&xpath=');//xpath
+		    buffer.append(encodeURIComponent(command.xpath));
+		    buffer.append('&data=');  //data
+		    buffer.append(encodeURIComponent(command.data));
+		    buffer.append('&author='); //author
+		    if (author.value == '') {
+		        buffer.append(encodeURIComponent('Anonymous'));
+		    } else {
+		        buffer.append(encodeURIComponent(author.value));
+		    }
+		});  	    console.log(buffer.toString());	    
 	    return buffer.toString().substring(3);
-	};
+	}; 
     }
 
     /**
@@ -3379,8 +3445,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
      */
     function VisualPageEditor() {
 	var self = this, overlayBar, pageShortcuts, editCommandHistory, editorHasFocus = true, listeners = new Array(),
-	textElementSelector, imageElementSelector, editableElementSelector, preProcessors = new Array(),
-	currentSelector = null, updateSelection, getSelectorForType, focus, closePopup;
+	    textElementSelector, imageElementSelector, editableElementSelector, preProcessors = new Array(),
+	    currentSelector = null, updateSelection, getSelectorForType, focus, closePopup;
 	var ACTION = {
 	    MOUSE_OVER : 0, MOUSE_OUT: 1, MOUSE_CLICK: 2
 	};
@@ -3402,59 +3468,63 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	};
 
 
-	this.formUncomplete = function fromUncomplete() {
-	    return editCommandHistory.formUncomplete();
-	};
-
 	this.show = function show() {
+
 	    DOM.addListener('mouseover', function globalMouseOverListener(event) {
-		var type = event.target.getAttribute('m4pageedittype');
-		if (type) {
-		    event.preventDefault();
-		    event.stopPropagation();
-		    updateSelection(ACTION.MOUSE_OVER, event);
-		}
-	    }, true);
+		    if(event.target.id != 'ok-button'){
+			var type = event.target.getAttribute('m4pageedittype');
+			if (type) {
+			    event.preventDefault();
+			    event.stopPropagation();
+			    updateSelection(ACTION.MOUSE_OVER, event);
+			}}
+		}, true);
 
 	    DOM.addListener('mouseout', function globalMouseOutListener(event) {
-		var type = event.target.getAttribute('m4pageedittype');
-		if (type) {
-		    event.preventDefault();
-		    event.stopPropagation();
-		    updateSelection(ACTION.MOUSE_OUT, event);
-		}
-	    }, true);
+		    var type = event.target.getAttribute('m4pageedittype');
+		    if (type) {
+			event.preventDefault();
+			event.stopPropagation();
+			updateSelection(ACTION.MOUSE_OUT, event);
+		    }
+		}, true);
 
 	    DOM.addListener('click', function globalClickListener(event) {
-		var type = event.target.getAttribute('m4pageedittype');
-		if (event.target.getAttribute('m4pageeditcontrol')) {
-		    // click is passthrough for our controls
-		} else if (type) {
-		    event.preventDefault();
-		    event.stopPropagation();
-		    updateSelection(ACTION.MOUSE_CLICK, event);
-		} else {
-		    // normal page elements
-		    event.preventDefault();
-		    event.stopPropagation();
-		    self.saveAndClose();
-		}
-	    }, true);
+		    var type = event.target.getAttribute('m4pageedittype');
+		    var alipiElements = event.target.getAttribute('alipiElements');
+		    if (event.target.getAttribute('m4pageeditcontrol')) {
+			// click is passthrough for our controls
+		    } else if (type) {
+			event.preventDefault();
+			event.stopPropagation();
+			updateSelection(ACTION.MOUSE_CLICK, event);
+		    } else if (event.target.id == "" || alipiElements || event.target.parentNode.attributes['class'].value == "ui-menu-item") {  // click is passthrough for our controls
+		    } else {
+			// normal page elements
+			event.preventDefault();
+			event.stopPropagation();
+			self.saveAndClose();
+		    }
+		}, true);
 
 	    // We intercept mousedown so things like drop down box won't work during edit mode.
 	    DOM.addListener('mousedown', function globalMouseDownListener(event) {
-		if (event.target.getAttribute('m4pageeditcontrol')) {
-		    // passthrough
-		} else if (event.target.getAttribute('m4pageedittype')) {
-		    // passthrough
-		} else if (event.clientX > document.body.clientWidth || event.clientY > document.body.clientHeight) {
-		    // passthrough if this click was outside of the html page, meaning on a scrollbar
-		} else {
-		    // normal page elements
-		    event.preventDefault();
-		    event.stopPropagation();
-		}
-	    }, true);
+
+		    var alipiElements = event.target.getAttribute('alipiElements');
+		    if (event.target.getAttribute('m4pageeditcontrol')) {
+			// passthrough
+		    } else if (event.target.getAttribute('m4pageedittype')) {
+			// passthrough
+		    } else if (event.target.id == "lang-select" || event.target.id == "loc-select" || alipiElements) {
+			// passthrough
+		    } else if (event.clientX > document.body.clientWidth || event.clientY > document.body.clientHeight) {
+			// passthrough if this click was outside of the html page, meaning on a scrollbar
+		    } else {
+			// normal page elements
+			event.preventDefault();
+			event.stopPropagation();
+		    }
+		}, true);
 	    pageShortcuts.enable();
 	    overlayBar.show(false);
 	    overlayBar.message("Ready to Narrate");
@@ -3496,11 +3566,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	    switch (type) {
             case 'text':
-		return textElementSelector;
+	    return textElementSelector;
             case 'image':
-		return imageElementSelector;
+	    return imageElementSelector;
             case 'edit':
-		return editableElementSelector;
+	    return editableElementSelector;
 	    }
 	    return null;
 	};
@@ -3509,7 +3579,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    editorHasFocus = true;
 	    for (var i = 0; i < listeners.length; i++) {
 		listeners[i](saveChanges)
-	    }
+		    }
 	};
 
 	closePopup = function closePopup(saveChanges) {
@@ -3587,30 +3657,30 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	    this.process = function process() {
 		// make iframes unclickable by overlaying transparent div over it.
 		UTIL.forEach(document.getElementsByTagName('iframe'), function(index, iframe) {
-		    var displayStyle = null;
-		    if (document.defaultView && document.defaultView.getComputedStyle) {
-			displayStyle = document.defaultView.getComputedStyle(iframe, null).getPropertyValue('display');
-		    } else if (iframe.currentStyle) {
-			displayStyle = iframe.currentStyle['display'];
-		    }
-		    if(displayStyle != 'none') {
-			DOM.clickBlocker(iframe);
-		    }
-		    var iframeSourceUrl = iframe.src;
-		    var isYouTubeIFrame = iframeSourceUrl.toLowerCase().indexOf('youtube') != -1;
-		    if (isYouTubeIFrame) {
-			// If the flash object is visible when the wmode property is set, then the state doesn't get updated.
-			// So first set the parent node's display property to 'none, then add the wmode property and finally
-			// restore the original display proeprty back on the parent.
-			DOM.overrideStyleProperty(iframe.parentNode, 'display', 'none');
-			if(iframeSourceUrl.indexOf('?') != -1) {
-			    iframe.src = iframeSourceUrl + '&wmode=opaque';
-			} else {
-			    iframe.src = iframeSourceUrl + '?wmode=opaque';
+			var displayStyle = null;
+			if (document.defaultView && document.defaultView.getComputedStyle) {
+			    displayStyle = document.defaultView.getComputedStyle(iframe, null).getPropertyValue('display');
+			} else if (iframe.currentStyle) {
+			    displayStyle = iframe.currentStyle['display'];
 			}
-			DOM.restoreStyleProperty(iframe.parentNode, 'display');
-		    }
-		});
+			if(displayStyle != 'none') {
+			    DOM.clickBlocker(iframe);
+			}
+			var iframeSourceUrl = iframe.src;
+			var isYouTubeIFrame = iframeSourceUrl.toLowerCase().indexOf('youtube') != -1;
+			if (isYouTubeIFrame) {
+			    // If the flash object is visible when the wmode property is set, then the state doesn't get updated.
+			    // So first set the parent node's display property to 'none, then add the wmode property and finally
+			    // restore the original display proeprty back on the parent.
+			    DOM.overrideStylePropert(iframe.parentNode, 'display', 'none');
+			    if(iframeSourceUrl.indexOf('?') != -1) {
+				iframe.src = iframeSourceUrl + '&wmode=opaque';
+			    } else {
+				iframe.src = iframeSourceUrl + '?wmode=opaque';
+			    }
+			    DOM.restoreStyleProperty(iframe.parentNode, 'display');
+			}
+		    });
 	    };
 
 	    this.restore = function restore() {
@@ -3624,21 +3694,21 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 		// So first set the parent node's display property to 'none, then add the wmode property and finally
 		// restore the original display proeprty back on the parent.
 		UTIL.forEach(document.getElementsByTagName('object'), function(index, value) {
-		    DOM.overrideStyleProperty(value.parentNode, 'display', 'none');
-		    DOM.clickBlocker(value);
-		    var param = document.createElement('param');
-		    param.setAttribute('name', 'wmode');
-		    param.setAttribute('value', 'opaque');
-		    value.appendChild(param);
-		    DOM.restoreStyleProperty(value.parentNode, 'display');
-		});
+			DOM.overrideStyleProperty(value.parentNode, 'display', 'none');
+			DOM.clickBlocker(value);
+			var param = document.createElement('param');
+			param.setAttribute('name', 'wmode');
+			param.setAttribute('value', 'opaque');
+			value.appendChild(param);
+			DOM.restoreStyleProperty(value.parentNode, 'display');
+		    });
 
 		UTIL.forEach(document.getElementsByTagName('embed'), function(index, value) {
-		    DOM.overrideStyleProperty(value.parentNode, 'display', 'none');
-		    DOM.clickBlocker(value);
-		    value.setAttribute('wmode', 'opaque');
-		    DOM.restoreStyleProperty(value.parentNode, 'display');
-		});
+			DOM.overrideStyleProperty(value.parentNode, 'display', 'none');
+			DOM.clickBlocker(value);
+			value.setAttribute('wmode', 'opaque');
+			DOM.restoreStyleProperty(value.parentNode, 'display');
+		    });
 	    };
 
 	    this.restore = function restore() {
@@ -3648,20 +3718,20 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 	function FormPreProcessor () {
 	    var overrideElementAttribute = function overrideElementAttribute(nodeName, attributeName, attributeValue) {
 		UTIL.forEach(document.getElementsByTagName(nodeName), function(index, inputElement) {
-		    var type = inputElement.getAttribute('m4pageeditcontrol');
-		    if (!type) {
-			DOM.overrideAttribute(inputElement, attributeName, attributeValue);
-		    }
-		});
+			var type = inputElement.getAttribute('m4pageeditcontrol');
+			if (!type) {
+			    DOM.overrideAttribute(inputElement, attributeName, attributeValue);
+			}
+		    });
 	    };
 
 	    var restoreElementAttribute = function restoreElementAttribute(nodeName, attributeName) {
 		UTIL.forEach(document.getElementsByTagName(nodeName), function(index, inputElement) {
-		    var type = inputElement.getAttribute('m4pageeditcontrol');
-		    if (!type) {
-			DOM.restoreAttribute(inputElement, attributeName);
-		    }
-		});
+			var type = inputElement.getAttribute('m4pageeditcontrol');
+			if (!type) {
+			    DOM.restoreAttribute(inputElement, attributeName);
+			}
+		    });
 	    };
 
 	    this.process = function process() {
@@ -3752,7 +3822,7 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
 	function TextElementSelector(pageEditor) {
 	    var self = this, lastSelection = null, textElementPopup = new TextElementPopup(pageEditor), editor,
-            findAnchorAncestor, internalHighlight;
+		findAnchorAncestor, internalHighlight;
 
 	    if(DOM.isIEBrowser()) {
 		editor = new InternetExplorerInlineEditor();
@@ -3967,10 +4037,11 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
 
     }
     splashWindow = new SplashWindow(pageEditor);
-    splashWindow.show();
+    splashWindow.createLabels();
+    splashWindow.activate();
     if (editMode != 'HTML') {
-	pageEditor = new VisualPageEditor();
-	pageEditor.show();
+    	pageEditor = new VisualPageEditor();
+    	pageEditor.show();
     }
 
     var activateEditor = function activateEditor() {
@@ -3991,8 +4062,8 @@ function page_edit( boltSlug, pageSlug, uploadSlug, editMode, hasEditPermission,
     }
     loadingTimerId = setTimeout(activateEditor, 000);
     UTIL.addEvent(window, 'load', function() {
-	clearTimeout(loadingTimerId);
-	activateEditor();
-    });
+	    clearTimeout(loadingTimerId);
+	    activateEditor();
+	});
 
 }
